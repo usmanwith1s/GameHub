@@ -1493,3 +1493,22 @@ body.light-mode .login-btn {
 .game-card-actions .project-link {
     padding: 11px 4px;
 }
+/* =========================================
+   LIVES SYSTEM
+   ========================================= */
+
+#lives {
+    letter-spacing: 4px;
+    font-size: 1.15rem;
+    color: var(--accent);
+    white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+
+    #lives {
+        font-size: 0.95rem;
+        letter-spacing: 2px;
+    }
+
+}
