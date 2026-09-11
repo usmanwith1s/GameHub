@@ -26,6 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const levelElement = document.getElementById("level");
     const scoreElement = document.getElementById("score");
+    const livesElement = document.getElementById("lives");
     const answerInput = document.getElementById("answer");
     const submitButton = document.getElementById("submit-answer");
     const feedbackElement = document.getElementById("feedback");
@@ -38,46 +39,16 @@ document.addEventListener("DOMContentLoaded", () => {
        ========================================= */
 
     const patterns = [
-        {
-            numbers: [2, 4, 6, 8],
-            answer: 10
-        },
-        {
-            numbers: [5, 10, 15, 20],
-            answer: 25
-        },
-        {
-            numbers: [3, 6, 12, 24],
-            answer: 48
-        },
-        {
-            numbers: [1, 4, 9, 16],
-            answer: 25
-        },
-        {
-            numbers: [2, 6, 12, 20],
-            answer: 30
-        },
-        {
-            numbers: [81, 27, 9, 3],
-            answer: 1
-        },
-        {
-            numbers: [2, 3, 5, 8, 12],
-            answer: 17
-        },
-        {
-            numbers: [1, 2, 4, 7, 11],
-            answer: 16
-        },
-        {
-            numbers: [100, 90, 81, 73],
-            answer: 66
-        },
-        {
-            numbers: [2, 4, 8, 16, 32],
-            answer: 64
-        }
+        { numbers: [2, 4, 6, 8], answer: 10 },
+        { numbers: [5, 10, 15, 20], answer: 25 },
+        { numbers: [3, 6, 12, 24], answer: 48 },
+        { numbers: [1, 4, 9, 16], answer: 25 },
+        { numbers: [2, 6, 12, 20], answer: 30 },
+        { numbers: [81, 27, 9, 3], answer: 1 },
+        { numbers: [2, 3, 5, 8, 12], answer: 17 },
+        { numbers: [1, 2, 4, 7, 11], answer: 16 },
+        { numbers: [100, 90, 81, 73], answer: 66 },
+        { numbers: [2, 4, 8, 16, 32], answer: 64 }
     ];
 
 
@@ -87,9 +58,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let currentLevel = 0;
     let score = 0;
-
-    // True after the current level has been solved
+    let lives = 3;
     let answered = false;
+    let gameOver = false;
+
+
+    /* =========================================
+       UPDATE LIVES DISPLAY
+       ========================================= */
+
+    function updateLives() {
+
+        livesElement.textContent =
+            "♥".repeat(lives) + "♡".repeat(3 - lives);
+    }
 
 
     /* =========================================
@@ -104,8 +86,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         patternElement.innerHTML = "";
 
-
-        // Display numbers
         currentPattern.numbers.forEach((number) => {
 
             const numberElement = document.createElement("span");
@@ -113,11 +93,9 @@ document.addEventListener("DOMContentLoaded", () => {
             numberElement.textContent = number;
 
             patternElement.appendChild(numberElement);
-
         });
 
 
-        // Display missing number
         const missingElement = document.createElement("span");
 
         missingElement.classList.add("missing");
@@ -126,21 +104,41 @@ document.addEventListener("DOMContentLoaded", () => {
         patternElement.appendChild(missingElement);
 
 
-        // Update information
         levelElement.textContent = currentLevel + 1;
         scoreElement.textContent = score;
 
+        updateLives();
 
-        // Reset answer area
+
         answerInput.value = "";
         feedbackElement.textContent = "";
 
         submitButton.hidden = false;
         nextLevelButton.hidden = true;
 
+        answerInput.disabled = false;
+        submitButton.disabled = false;
 
-        // Focus input
         answerInput.focus();
+    }
+
+
+    /* =========================================
+       GAME OVER
+       ========================================= */
+
+    function endGame() {
+
+        gameOver = true;
+
+        answerInput.disabled = true;
+        submitButton.hidden = true;
+        nextLevelButton.hidden = true;
+
+        feedbackElement.textContent =
+            `Game Over! Final score: ${score}`;
+
+        restartButton.hidden = false;
     }
 
 
@@ -150,6 +148,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function goToNextLevel() {
 
+        if (gameOver) {
+            return;
+        }
+
         if (currentLevel < patterns.length - 1) {
 
             currentLevel++;
@@ -158,10 +160,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         } else {
 
-            // Final level completed
             feedbackElement.textContent =
                 "Perfect! You completed every level.";
 
+            submitButton.hidden = true;
+            nextLevelButton.hidden = true;
             restartButton.hidden = false;
         }
     }
@@ -173,9 +176,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function checkAnswer() {
 
+        if (gameOver) {
+            return;
+        }
+
+
         /*
-         * If the level was already solved,
-         * pressing Enter again moves forward.
+         * If the current answer was already marked
+         * correct, move to the next level.
          */
         if (answered) {
 
@@ -185,7 +193,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
-        // Make sure something was entered
         if (answerInput.value === "") {
 
             feedbackElement.textContent =
@@ -199,9 +206,9 @@ document.addEventListener("DOMContentLoaded", () => {
         const correctAnswer = patterns[currentLevel].answer;
 
 
-        /* =====================================
+        /* =========================================
            CORRECT ANSWER
-           ===================================== */
+           ========================================= */
 
         if (userAnswer === correctAnswer) {
 
@@ -211,9 +218,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             scoreElement.textContent = score;
 
-            /*
-             * Final level
-             */
+
             if (currentLevel === patterns.length - 1) {
 
                 feedbackElement.textContent =
@@ -222,12 +227,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 submitButton.hidden = true;
                 restartButton.hidden = false;
 
-            }
-
-            /*
-             * Normal level
-             */
-            else {
+            } else {
 
                 feedbackElement.textContent =
                     "Correct! Press Enter for the next level.";
@@ -239,16 +239,28 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
-        /* =====================================
+        /* =========================================
            WRONG ANSWER
-           ===================================== */
+           ========================================= */
 
         else {
 
-            feedbackElement.textContent =
-                "Not quite. Try again.";
+            lives--;
 
-            answerInput.select();
+            updateLives();
+
+
+            if (lives <= 0) {
+
+                endGame();
+
+            } else {
+
+                feedbackElement.textContent =
+                    `Not quite. You lost a life. ${lives} remaining.`;
+
+                answerInput.select();
+            }
         }
     }
 
@@ -272,16 +284,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
         currentLevel = 0;
         score = 0;
+        lives = 3;
+        gameOver = false;
+        answered = false;
 
         restartButton.hidden = true;
 
         displayPattern();
-
     });
 
 
     /* =========================================
-       SUBMIT BUTTON
+       SUBMIT ANSWER
        ========================================= */
 
     submitButton.addEventListener("click", checkAnswer);
@@ -298,9 +312,7 @@ document.addEventListener("DOMContentLoaded", () => {
             event.preventDefault();
 
             checkAnswer();
-
         }
-
     });
 
 
