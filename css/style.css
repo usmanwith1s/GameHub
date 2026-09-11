@@ -1581,3 +1581,155 @@ body.light-mode .login-btn {
     }
 
 }
+/* =========================================
+   FINAL SCORE SCREEN
+   ========================================= */
+
+.final-screen {
+    text-align: center;
+    padding: 30px 10px 10px;
+}
+
+.final-label {
+    display: inline-block;
+    margin-bottom: 16px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+}
+
+.final-screen h2 {
+    margin: 0;
+    font-size: clamp(3rem, 8vw, 5.5rem);
+    line-height: 0.95;
+    letter-spacing: -0.05em;
+}
+
+.final-screen h2 span {
+    color: var(--accent);
+}
+
+.final-message {
+    margin: 18px auto 32px;
+    max-width: 500px;
+    color: var(--text-muted);
+    line-height: 1.7;
+}
+
+.final-stats {
+    width: min(100%, 700px);
+    margin: 0 auto 34px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+}
+
+.final-stat {
+    padding: 20px 14px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: var(--card-bg);
+}
+
+.final-stat span {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text-muted);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+}
+
+.final-stat strong {
+    display: block;
+    font-size: 1.4rem;
+}
+
+.final-screen .primary-btn {
+    min-width: 150px;
+}
+
+
+/* =========================================
+   TIMER
+   ========================================= */
+
+.timer-stat strong {
+    min-width: 42px;
+    display: inline-block;
+    text-align: center;
+}
+
+.timer-stat.warning strong {
+    animation: timerPulse 0.8s ease-in-out infinite;
+}
+
+@keyframes timerPulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.12);
+    }
+
+}
+
+
+/* =========================================
+   STREAK
+   ========================================= */
+
+#streak {
+    white-space: nowrap;
+}
+
+
+/* =========================================
+   MOBILE GAME STATS
+   ========================================= */
+
+@media (max-width: 700px) {
+
+    .game-topbar {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .timer-stat {
+        grid-column: 1 / -1;
+    }
+
+    .final-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    #streak {
+        font-size: 0.95rem;
+    }
+
+    .timer-stat strong {
+        font-size: 0.95rem;
+    }
+
+    .final-screen {
+        padding-top: 15px;
+    }
+
+    .final-stat {
+        padding: 16px 10px;
+    }
+
+    .final-stat span {
+        font-size: 0.6rem;
+    }
+
+}
