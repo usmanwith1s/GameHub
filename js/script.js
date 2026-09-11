@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const patternElement = document.getElementById("pattern");
 
-    // Stop here on pages that aren't the game page
+    // Do nothing on pages that aren't the game page
     if (!patternElement) {
         return;
     }
@@ -88,7 +88,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let currentLevel = 0;
     let score = 0;
 
-    // Prevent the same level from being scored twice
+    // True after the current level has been solved
     let answered = false;
 
 
@@ -98,7 +98,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function displayPattern() {
 
-        // Unlock the new level
         answered = false;
 
         const currentPattern = patterns[currentLevel];
@@ -106,7 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
         patternElement.innerHTML = "";
 
 
-        // Display existing numbers
+        // Display numbers
         currentPattern.numbers.forEach((number) => {
 
             const numberElement = document.createElement("span");
@@ -127,7 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
         patternElement.appendChild(missingElement);
 
 
-        // Update game information
+        // Update information
         levelElement.textContent = currentLevel + 1;
         scoreElement.textContent = score;
 
@@ -140,8 +139,31 @@ document.addEventListener("DOMContentLoaded", () => {
         nextLevelButton.hidden = true;
 
 
-        // Focus the input
+        // Focus input
         answerInput.focus();
+    }
+
+
+    /* =========================================
+       MOVE TO NEXT LEVEL
+       ========================================= */
+
+    function goToNextLevel() {
+
+        if (currentLevel < patterns.length - 1) {
+
+            currentLevel++;
+
+            displayPattern();
+
+        } else {
+
+            // Final level completed
+            feedbackElement.textContent =
+                "Perfect! You completed every level.";
+
+            restartButton.hidden = false;
+        }
     }
 
 
@@ -151,13 +173,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function checkAnswer() {
 
-        // Prevent duplicate scoring
+        /*
+         * If the level was already solved,
+         * pressing Enter again moves forward.
+         */
         if (answered) {
+
+            goToNextLevel();
+
             return;
         }
 
 
-        // Make sure the player entered something
+        // Make sure something was entered
         if (answerInput.value === "") {
 
             feedbackElement.textContent =
@@ -177,35 +205,35 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (userAnswer === correctAnswer) {
 
-            // Lock this level immediately
             answered = true;
 
-            // Add score once
             score += 100;
 
             scoreElement.textContent = score;
 
-            feedbackElement.textContent =
-                "Correct! Nice work.";
-
-            // Prevent another submission
-            submitButton.hidden = true;
-
-
-            // More levels available
-            if (currentLevel < patterns.length - 1) {
-
-                nextLevelButton.hidden = false;
-
-            }
-
-            // Final level completed
-            else {
+            /*
+             * Final level
+             */
+            if (currentLevel === patterns.length - 1) {
 
                 feedbackElement.textContent =
                     "Perfect! You completed every level.";
 
+                submitButton.hidden = true;
                 restartButton.hidden = false;
+
+            }
+
+            /*
+             * Normal level
+             */
+            else {
+
+                feedbackElement.textContent =
+                    "Correct! Press Enter for the next level.";
+
+                submitButton.hidden = true;
+                nextLevelButton.hidden = false;
             }
 
         }
@@ -226,14 +254,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =========================================
-       NEXT LEVEL
+       NEXT LEVEL BUTTON
        ========================================= */
 
     nextLevelButton.addEventListener("click", () => {
 
-        currentLevel++;
-
-        displayPattern();
+        goToNextLevel();
 
     });
 
@@ -255,7 +281,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =========================================
-       SUBMIT ANSWER
+       SUBMIT BUTTON
        ========================================= */
 
     submitButton.addEventListener("click", checkAnswer);
@@ -268,6 +294,8 @@ document.addEventListener("DOMContentLoaded", () => {
     answerInput.addEventListener("keydown", (event) => {
 
         if (event.key === "Enter") {
+
+            event.preventDefault();
 
             checkAnswer();
 
