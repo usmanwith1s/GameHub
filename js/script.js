@@ -24,10 +24,18 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
     }
 
+
+    /* =========================================
+       ELEMENTS
+       ========================================= */
+
     const levelElement = document.getElementById("level");
     const scoreElement = document.getElementById("score");
     const livesElement = document.getElementById("lives");
     const streakElement = document.getElementById("streak");
+    const timerElement = document.getElementById("timer");
+
+    const timerStat = document.querySelector(".timer-stat");
 
     const answerInput = document.getElementById("answer");
     const submitButton = document.getElementById("submit-answer");
@@ -56,13 +64,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =========================================
+       GAME SETTINGS
+       ========================================= */
+
+    const STARTING_LIVES = 3;
+    const STARTING_TIME = 20;
+
+
+    /* =========================================
        GAME STATE
        ========================================= */
 
     let currentLevel = 0;
     let score = 0;
-    let lives = 3;
+    let lives = STARTING_LIVES;
     let streak = 0;
+
+    let timeLeft = STARTING_TIME;
+    let timerInterval = null;
 
     let answered = false;
     let gameOver = false;
@@ -75,7 +94,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function updateLives() {
 
         livesElement.textContent =
-            "♥".repeat(lives) + "♡".repeat(3 - lives);
+            "♥".repeat(lives) + "♡".repeat(STARTING_LIVES - lives);
     }
 
 
@@ -96,11 +115,6 @@ document.addEventListener("DOMContentLoaded", () => {
     function calculatePoints() {
 
         /*
-         * Base score = 100
-         *
-         * Every consecutive correct answer
-         * adds another 50 points.
-         *
          * Streak 1 = 100
          * Streak 2 = 150
          * Streak 3 = 200
@@ -108,6 +122,120 @@ document.addEventListener("DOMContentLoaded", () => {
          */
 
         return 100 + ((streak - 1) * 50);
+    }
+
+
+    /* =========================================
+       STOP TIMER
+       ========================================= */
+
+    function stopTimer() {
+
+        if (timerInterval !== null) {
+
+            clearInterval(timerInterval);
+
+            timerInterval = null;
+        }
+    }
+
+
+    /* =========================================
+       UPDATE TIMER DISPLAY
+       ========================================= */
+
+    function updateTimerDisplay() {
+
+        timerElement.textContent = timeLeft;
+
+        if (timeLeft <= 5) {
+
+            timerStat.classList.add("warning");
+
+        } else {
+
+            timerStat.classList.remove("warning");
+        }
+    }
+
+
+    /* =========================================
+       START TIMER
+       ========================================= */
+
+    function startTimer() {
+
+        stopTimer();
+
+        timeLeft = STARTING_TIME;
+
+        updateTimerDisplay();
+
+
+        timerInterval = setInterval(() => {
+
+            if (gameOver || answered) {
+
+                stopTimer();
+
+                return;
+            }
+
+
+            timeLeft--;
+
+            updateTimerDisplay();
+
+
+            if (timeLeft <= 0) {
+
+                stopTimer();
+
+                handleTimeOut();
+            }
+
+        }, 1000);
+    }
+
+
+    /* =========================================
+       HANDLE TIME OUT
+       ========================================= */
+
+    function handleTimeOut() {
+
+        if (gameOver || answered) {
+            return;
+        }
+
+        lives--;
+
+        streak = 0;
+
+        updateLives();
+        updateStreak();
+
+
+        if (lives <= 0) {
+
+            endGame();
+
+        } else {
+
+            feedbackElement.textContent =
+                `Time's up! You lost a life. ${lives} remaining.`;
+
+            /*
+             * Give the player another attempt
+             * at the same level.
+             */
+
+            answerInput.value = "";
+
+            startTimer();
+
+            answerInput.focus();
+        }
     }
 
 
@@ -158,6 +286,9 @@ document.addEventListener("DOMContentLoaded", () => {
         answerInput.disabled = false;
         submitButton.disabled = false;
 
+
+        startTimer();
+
         answerInput.focus();
     }
 
@@ -170,9 +301,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
         gameOver = true;
 
+        stopTimer();
+
         answerInput.disabled = true;
         submitButton.hidden = true;
         nextLevelButton.hidden = true;
+
+        timerStat.classList.remove("warning");
 
         feedbackElement.textContent =
             `Game Over! Final score: ${score}`;
@@ -200,8 +335,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         } else {
 
+            stopTimer();
+
             feedbackElement.textContent =
-                "Perfect! You completed every level.";
+                `Perfect! Final score: ${score}`;
 
             submitButton.hidden = true;
             nextLevelButton.hidden = true;
@@ -222,8 +359,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         /*
-         * If the answer was already correct,
-         * pressing Enter moves to the next level.
+         * Second Enter after a correct answer
+         * moves to the next level.
          */
 
         if (answered) {
@@ -255,6 +392,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
             answered = true;
 
+            stopTimer();
+
             streak++;
 
             const points = calculatePoints();
@@ -269,7 +408,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (currentLevel === patterns.length - 1) {
 
                 feedbackElement.textContent =
-                    `Perfect! +${points} points. You completed every level.`;
+                    `Perfect! +${points} points. Final score: ${score}`;
 
                 submitButton.hidden = true;
                 restartButton.hidden = false;
@@ -293,7 +432,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             lives--;
 
-            // Wrong answer breaks the streak
             streak = 0;
 
             updateLives();
@@ -332,10 +470,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     restartButton.addEventListener("click", () => {
 
+        stopTimer();
+
         currentLevel = 0;
         score = 0;
-        lives = 3;
+        lives = STARTING_LIVES;
         streak = 0;
+
+        timeLeft = STARTING_TIME;
 
         gameOver = false;
         answered = false;
