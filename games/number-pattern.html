@@ -1,8 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Number Pattern | GameHub</title>
 
@@ -12,26 +18,48 @@
     >
 
     <link rel="stylesheet" href="../css/style.css">
+
 </head>
+
 
 <body>
 
-    <!-- HEADER -->
+    <!-- =========================================
+         HEADER
+         ========================================= -->
+
     <header class="site-header">
+
         <nav class="navbar">
 
             <a href="../index.html" class="logo">
                 GAME<span>HUB</span>
             </a>
 
+
             <div class="nav-links">
-                <a href="../index.html#home">Home</a>
-                <a href="../index.html#games">Games</a>
-                <a href="../index.html#leaderboard">Leaderboard</a>
-                <a href="../index.html#about">About</a>
+
+                <a href="../index.html#home">
+                    Home
+                </a>
+
+                <a href="../index.html#games">
+                    Games
+                </a>
+
+                <a href="../index.html#leaderboard">
+                    Leaderboard
+                </a>
+
+                <a href="../index.html#about">
+                    About
+                </a>
+
             </div>
 
+
             <div class="nav-actions">
+
                 <button
                     class="theme-toggle"
                     type="button"
@@ -40,147 +68,309 @@
                     ◐
                 </button>
 
-                <a href="../index.html#games" class="login-btn">
+                <a
+                    href="../index.html#games"
+                    class="login-btn"
+                >
                     Back to Games
                 </a>
+
             </div>
 
         </nav>
+
     </header>
 
 
-    <!-- GAME PAGE -->
+    <!-- =========================================
+         GAME PAGE
+         ========================================= -->
+
     <main class="game-page">
 
+
         <!-- GAME HEADER -->
+
         <section class="game-header">
 
-            <a href="../index.html#games" class="back-link">
+            <a
+                href="../index.html#games"
+                class="back-link"
+            >
                 ← Back to Game Library
             </a>
+
 
             <span class="game-page-label">
                 GAME 01 / LOGIC
             </span>
 
+
             <h1>
                 Number <span>Pattern.</span>
             </h1>
 
+
             <p>
-                Find the missing number. Think carefully.
+                Find the missing number.
                 The patterns get harder as you progress.
             </p>
 
         </section>
 
 
-        <!-- GAME AREA -->
+        <!-- =========================================
+             GAME CONTAINER
+             ========================================= -->
+
         <section class="game-container">
 
+
             <!-- GAME TOP BAR -->
-      <div class="game-topbar">
 
-    <div class="game-stat">
-        <span>LEVEL</span>
-        <strong id="level">1</strong>
-    </div>
+            <div class="game-topbar">
 
-    <div class="game-stat">
-        <span>SCORE</span>
-        <strong id="score">0</strong>
-    </div>
+                <div class="game-stat">
 
-    <div class="game-stat">
-        <span>LIVES</span>
-        <strong id="lives">♥♥♥</strong>
-    </div>
+                    <span>
+                        LEVEL
+                    </span>
 
-    <div class="game-stat">
-        <span>STREAK</span>
-        <strong id="streak">0×</strong>
-    </div>
+                    <strong id="level">
+                        1
+                    </strong>
 
-    <div class="game-stat timer-stat">
-        <span>TIME</span>
-        <strong id="timer">20</strong>
-    </div>
-
-</div>
+                </div>
 
 
-            <!-- PATTERN -->
-            <div class="pattern-area">
+                <div class="game-stat">
 
-                <span class="pattern-label">
-                    COMPLETE THE PATTERN
-                </span>
+                    <span>
+                        SCORE
+                    </span>
 
-                <div class="pattern" id="pattern">
-                    <span>2</span>
-                    <span>4</span>
-                    <span>6</span>
-                    <span>8</span>
-                    <span class="missing">?</span>
+                    <strong id="score">
+                        0
+                    </strong>
+
+                </div>
+
+
+                <div class="game-stat">
+
+                    <span>
+                        LIVES
+                    </span>
+
+                    <strong id="lives">
+                        ♥♥♥
+                    </strong>
+
+                </div>
+
+
+                <div class="game-stat">
+
+                    <span>
+                        STREAK
+                    </span>
+
+                    <strong id="streak">
+                        0×
+                    </strong>
+
+                </div>
+
+
+                <div class="game-stat timer-stat">
+
+                    <span>
+                        TIME
+                    </span>
+
+                    <strong id="timer">
+                        20
+                    </strong>
+
                 </div>
 
             </div>
 
 
-            <!-- ANSWER -->
-            <div class="answer-area">
+            <!-- =========================================
+                 ACTIVE GAME
+                 ========================================= -->
 
-                <label for="answer">
-                    YOUR ANSWER
-                </label>
+            <div id="active-game">
 
-                <div class="answer-row">
 
-                    <input
-                        type="number"
-                        id="answer"
-                        placeholder="Enter number"
-                        autocomplete="off"
+                <!-- PATTERN -->
+
+                <div class="pattern-area">
+
+                    <span class="pattern-label">
+                        COMPLETE THE PATTERN
+                    </span>
+
+
+                    <div
+                        class="pattern"
+                        id="pattern"
                     >
+                    </div>
+
+                </div>
+
+
+                <!-- ANSWER -->
+
+                <div class="answer-area">
+
+                    <label for="answer">
+                        YOUR ANSWER
+                    </label>
+
+
+                    <div class="answer-row">
+
+                        <input
+                            type="number"
+                            id="answer"
+                            placeholder="Enter number"
+                            autocomplete="off"
+                        >
+
+
+                        <button
+                            type="button"
+                            class="primary-btn"
+                            id="submit-answer"
+                        >
+                            Submit
+                        </button>
+
+                    </div>
+
+
+                    <p
+                        class="game-feedback"
+                        id="feedback"
+                        aria-live="polite"
+                    >
+                    </p>
+
+                </div>
+
+
+                <!-- GAME ACTIONS -->
+
+                <div class="game-actions">
 
                     <button
                         type="button"
-                        class="primary-btn"
-                        id="submit-answer"
+                        class="secondary-btn"
+                        id="next-level"
+                        hidden
                     >
-                        Submit
+                        Next Level →
                     </button>
 
                 </div>
 
-                <p
-                    class="game-feedback"
-                    id="feedback"
-                    aria-live="polite"
-                ></p>
-
             </div>
 
 
-            <!-- GAME ACTIONS -->
-            <div class="game-actions">
+            <!-- =========================================
+                 FINAL SCREEN
+                 ========================================= -->
+
+            <div
+                class="final-screen"
+                id="final-screen"
+                hidden
+            >
+
+                <span class="final-label">
+                    RUN COMPLETE
+                </span>
+
+
+                <h2>
+                    Game <span>Over.</span>
+                </h2>
+
+
+                <p
+                    class="final-message"
+                    id="final-message"
+                >
+                    Nice run.
+                </p>
+
+
+                <div class="final-stats">
+
+
+                    <div class="final-stat">
+
+                        <span>
+                            FINAL SCORE
+                        </span>
+
+                        <strong id="final-score">
+                            0
+                        </strong>
+
+                    </div>
+
+
+                    <div class="final-stat">
+
+                        <span>
+                            LEVEL REACHED
+                        </span>
+
+                        <strong id="final-level">
+                            1
+                        </strong>
+
+                    </div>
+
+
+                    <div class="final-stat">
+
+                        <span>
+                            BEST STREAK
+                        </span>
+
+                        <strong id="final-streak">
+                            0×
+                        </strong>
+
+                    </div>
+
+
+                    <div class="final-stat">
+
+                        <span>
+                            LIVES LEFT
+                        </span>
+
+                        <strong id="final-lives">
+                            0
+                        </strong>
+
+                    </div>
+
+                </div>
+
 
                 <button
                     type="button"
-                    class="secondary-btn"
-                    id="next-level"
-                    hidden
+                    class="primary-btn"
+                    id="play-again"
                 >
-                    Next Level →
-                </button>
-
-                <button
-                    type="button"
-                    class="secondary-btn"
-                    id="restart-game"
-                    hidden
-                >
-                    Restart Game
+                    Play Again
                 </button>
 
             </div>
@@ -188,35 +378,65 @@
         </section>
 
 
-        <!-- GAME INFO -->
+        <!-- =========================================
+             GAME INFO
+             ========================================= -->
+
         <section class="game-info">
 
-            <div class="info-card">
-                <span>01</span>
-                <h3>How to Play</h3>
-                <p>
-                    Study the numbers and figure out the rule
-                    connecting them. Enter the missing number
-                    and submit your answer.
-                </p>
-            </div>
 
             <div class="info-card">
-                <span>02</span>
-                <h3>Difficulty</h3>
+
+                <span>
+                    01
+                </span>
+
+                <h3>
+                    How to Play
+                </h3>
+
                 <p>
-                    Each level introduces a new pattern and
-                    becomes more challenging.
+                    Study the numbers and figure out
+                    the rule connecting them.
+                    Enter the missing number.
                 </p>
+
             </div>
 
+
             <div class="info-card">
-                <span>03</span>
-                <h3>Challenge</h3>
+
+                <span>
+                    02
+                </span>
+
+                <h3>
+                    Build Your Streak
+                </h3>
+
                 <p>
-                    How far can you get? Keep solving patterns
-                    and build your highest score.
+                    Consecutive correct answers increase
+                    your multiplier and your score.
                 </p>
+
+            </div>
+
+
+            <div class="info-card">
+
+                <span>
+                    03
+                </span>
+
+                <h3>
+                    Beat the Clock
+                </h3>
+
+                <p>
+                    Every level has a limited amount of time.
+                    Higher levels become more demanding.
+                </p>
+
             </div>
 
         </section>
@@ -224,13 +444,24 @@
     </main>
 
 
-    <!-- FOOTER -->
+    <!-- =========================================
+         FOOTER
+         ========================================= -->
+
     <footer class="site-footer">
 
         <div>
-            <strong>GAMEHUB</strong>
-            <span>Play something.</span>
+
+            <strong>
+                GAMEHUB
+            </strong>
+
+            <span>
+                Play something.
+            </span>
+
         </div>
+
 
         <p>
             © 2026 GameHub.
@@ -242,4 +473,5 @@
     <script src="../js/script.js"></script>
 
 </body>
+
 </html>
