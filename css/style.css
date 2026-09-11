@@ -1535,3 +1535,49 @@ body.light-mode .login-btn {
     }
 
 }
+/* =========================================
+   TIMER SYSTEM
+   ========================================= */
+
+.timer-stat strong {
+    min-width: 42px;
+    display: inline-block;
+    text-align: center;
+}
+
+.timer-stat.warning strong {
+    animation: timerPulse 0.8s ease-in-out infinite;
+}
+
+@keyframes timerPulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.12);
+    }
+
+}
+
+@media (max-width: 700px) {
+
+    .game-topbar {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .timer-stat {
+        grid-column: 1 / -1;
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .timer-stat strong {
+        font-size: 0.95rem;
+    }
+
+}
