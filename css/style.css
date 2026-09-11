@@ -1424,6 +1424,66 @@ body.light-mode .login-btn {
     color: #000;
     font-weight: 700;
 }
+/* =========================================
+   MOBILE OVERFLOW FIX
+   ========================================= */
+
+@media (max-width: 600px) {
+
+    /* Keep the navbar inside the screen */
+    .navbar {
+        min-width: 0;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .nav-actions {
+        min-width: 0;
+        gap: 8px;
+    }
+
+    .login-btn {
+        white-space: nowrap;
+        padding: 10px 12px;
+        font-size: 0.75rem;
+    }
+
+
+    /* Prevent the huge hero title from overflowing */
+    .hero-content h1 {
+        max-width: 100%;
+        font-size: clamp(3rem, 15vw, 5rem);
+        line-height: 0.9;
+        overflow-wrap: break-word;
+        word-break: normal;
+    }
+
+
+    /* Keep hero buttons inside the phone */
+    .hero-actions {
+        width: 100%;
+        max-width: 100%;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .hero-actions a {
+        box-sizing: border-box;
+        max-width: 100%;
+    }
+
+
+    /* Prevent decorative hero elements from creating
+       horizontal page overflow */
+    .hero-section {
+        overflow: hidden;
+    }
+
+    .hero-visual {
+        min-width: 0;
+        max-width: 100%;
+    }
+}
 
 .game-card-actions .project-link {
     padding: 11px 4px;
