@@ -1457,6 +1457,11 @@ body.light-mode .login-btn {
         overflow-wrap: break-word;
         word-break: normal;
     }
+   .hero-content h1 span {
+    display: inline-block;
+    transform: scaleX(1.03);
+    transform-origin: left center;
+}
 
 
     /* Keep hero buttons inside the phone */
