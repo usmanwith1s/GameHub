@@ -27,9 +27,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const levelElement = document.getElementById("level");
     const scoreElement = document.getElementById("score");
     const livesElement = document.getElementById("lives");
+    const streakElement = document.getElementById("streak");
+
     const answerInput = document.getElementById("answer");
     const submitButton = document.getElementById("submit-answer");
     const feedbackElement = document.getElementById("feedback");
+
     const nextLevelButton = document.getElementById("next-level");
     const restartButton = document.getElementById("restart-game");
 
@@ -59,18 +62,52 @@ document.addEventListener("DOMContentLoaded", () => {
     let currentLevel = 0;
     let score = 0;
     let lives = 3;
+    let streak = 0;
+
     let answered = false;
     let gameOver = false;
 
 
     /* =========================================
-       UPDATE LIVES DISPLAY
+       UPDATE LIVES
        ========================================= */
 
     function updateLives() {
 
         livesElement.textContent =
             "♥".repeat(lives) + "♡".repeat(3 - lives);
+    }
+
+
+    /* =========================================
+       UPDATE STREAK
+       ========================================= */
+
+    function updateStreak() {
+
+        streakElement.textContent = `${streak}×`;
+    }
+
+
+    /* =========================================
+       CALCULATE SCORE
+       ========================================= */
+
+    function calculatePoints() {
+
+        /*
+         * Base score = 100
+         *
+         * Every consecutive correct answer
+         * adds another 50 points.
+         *
+         * Streak 1 = 100
+         * Streak 2 = 150
+         * Streak 3 = 200
+         * Streak 4 = 250
+         */
+
+        return 100 + ((streak - 1) * 50);
     }
 
 
@@ -85,6 +122,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const currentPattern = patterns[currentLevel];
 
         patternElement.innerHTML = "";
+
 
         currentPattern.numbers.forEach((number) => {
 
@@ -108,6 +146,7 @@ document.addEventListener("DOMContentLoaded", () => {
         scoreElement.textContent = score;
 
         updateLives();
+        updateStreak();
 
 
         answerInput.value = "";
@@ -152,6 +191,7 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
+
         if (currentLevel < patterns.length - 1) {
 
             currentLevel++;
@@ -182,9 +222,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         /*
-         * If the current answer was already marked
-         * correct, move to the next level.
+         * If the answer was already correct,
+         * pressing Enter moves to the next level.
          */
+
         if (answered) {
 
             goToNextLevel();
@@ -214,15 +255,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
             answered = true;
 
-            score += 100;
+            streak++;
+
+            const points = calculatePoints();
+
+            score += points;
 
             scoreElement.textContent = score;
+
+            updateStreak();
 
 
             if (currentLevel === patterns.length - 1) {
 
                 feedbackElement.textContent =
-                    "Perfect! You completed every level.";
+                    `Perfect! +${points} points. You completed every level.`;
 
                 submitButton.hidden = true;
                 restartButton.hidden = false;
@@ -230,12 +277,11 @@ document.addEventListener("DOMContentLoaded", () => {
             } else {
 
                 feedbackElement.textContent =
-                    "Correct! Press Enter for the next level.";
+                    `Correct! +${points} points. Streak: ${streak}×`;
 
                 submitButton.hidden = true;
                 nextLevelButton.hidden = false;
             }
-
         }
 
 
@@ -247,7 +293,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
             lives--;
 
+            // Wrong answer breaks the streak
+            streak = 0;
+
             updateLives();
+            updateStreak();
 
 
             if (lives <= 0) {
@@ -257,7 +307,7 @@ document.addEventListener("DOMContentLoaded", () => {
             } else {
 
                 feedbackElement.textContent =
-                    `Not quite. You lost a life. ${lives} remaining.`;
+                    `Not quite. You lost a life. ${lives} remaining. Streak reset.`;
 
                 answerInput.select();
             }
@@ -285,6 +335,8 @@ document.addEventListener("DOMContentLoaded", () => {
         currentLevel = 0;
         score = 0;
         lives = 3;
+        streak = 0;
+
         gameOver = false;
         answered = false;
 
