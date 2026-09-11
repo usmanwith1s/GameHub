@@ -683,6 +683,9 @@ button {
 
 
 @media (max-width: 600px) {
+   .game-visual {
+    height: 190px;
+}
 
     .site-header {
         padding: 10px 12px;
@@ -849,4 +852,153 @@ body.light-mode .hero-card {
 body.light-mode .login-btn {
     background: #111113;
     color: #ffffff;
+}
+/* =========================================================
+   GAME VISUALS
+========================================================= */
+
+.game-card {
+    overflow: hidden;
+    padding: 0;
+}
+
+.game-visual {
+    position: relative;
+
+    height: 210px;
+
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+
+    padding: 22px;
+
+    overflow: hidden;
+
+    border-bottom: 1px solid var(--border);
+
+    background:
+        radial-gradient(
+            circle at 70% 35%,
+            rgba(156, 255, 0, 0.16),
+            transparent 42%
+        ),
+        linear-gradient(145deg, #111116, #08080a);
+}
+
+.game-visual::before {
+    content: "";
+
+    position: absolute;
+
+    width: 180px;
+    height: 180px;
+
+    right: -45px;
+    top: -55px;
+
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+
+    box-shadow:
+        0 0 70px rgba(156, 255, 0, 0.08);
+
+    transition:
+        transform 0.7s var(--ease),
+        border-color 0.5s ease;
+}
+
+.game-card:hover .game-visual::before {
+    transform: scale(1.25) rotate(25deg);
+    border-color: rgba(156, 255, 0, 0.22);
+}
+
+.game-visual-icon {
+    position: relative;
+    z-index: 2;
+
+    font-size: 4.5rem;
+    font-weight: 950;
+    line-height: 0.8;
+    letter-spacing: -0.08em;
+
+    color: transparent;
+
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.38);
+}
+
+.game-visual-tag {
+    position: relative;
+    z-index: 2;
+
+    padding: 7px 10px;
+
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+
+    background: rgba(0, 0, 0, 0.28);
+
+    color: var(--muted);
+
+    font-size: 0.62rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+
+    backdrop-filter: blur(10px);
+}
+
+.number-game-visual {
+    background:
+        radial-gradient(
+            circle at 72% 35%,
+            rgba(156, 255, 0, 0.18),
+            transparent 40%
+        ),
+        linear-gradient(145deg, #111116, #08080a);
+}
+
+.password-game-visual {
+    background:
+        radial-gradient(
+            circle at 72% 35%,
+            rgba(130, 100, 255, 0.17),
+            transparent 40%
+        ),
+        linear-gradient(145deg, #111116, #08080a);
+}
+
+.hand-game-visual {
+    background:
+        radial-gradient(
+            circle at 72% 35%,
+            rgba(0, 200, 255, 0.14),
+            transparent 40%
+        ),
+        linear-gradient(145deg, #111116, #08080a);
+}
+
+.coming-game-visual {
+    background:
+        radial-gradient(
+            circle at 72% 35%,
+            rgba(255, 255, 255, 0.08),
+            transparent 40%
+        ),
+        linear-gradient(145deg, #111116, #08080a);
+}
+
+.game-card-info {
+    padding: 24px 26px 28px;
+}
+
+.game-card-info h3 {
+    margin-top: 12px;
+}
+
+.game-card-info p {
+    margin-top: 10px;
+}
+
+.game-card-info .game-card-link {
+    margin-top: 22px;
 }
