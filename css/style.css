@@ -1512,3 +1512,26 @@ body.light-mode .login-btn {
     }
 
 }
+/* =========================================
+   STREAK SYSTEM
+   ========================================= */
+
+#streak {
+    white-space: nowrap;
+}
+
+@media (max-width: 700px) {
+
+    .game-topbar {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    #streak {
+        font-size: 0.95rem;
+    }
+
+}
