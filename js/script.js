@@ -19,6 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const patternElement = document.getElementById("pattern");
 
+    // Stop here on pages that aren't the game page
     if (!patternElement) {
         return;
     }
@@ -87,6 +88,9 @@ document.addEventListener("DOMContentLoaded", () => {
     let currentLevel = 0;
     let score = 0;
 
+    // Prevent the same level from being scored twice
+    let answered = false;
+
 
     /* =========================================
        DISPLAY PATTERN
@@ -94,10 +98,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function displayPattern() {
 
+        // Unlock the new level
+        answered = false;
+
         const currentPattern = patterns[currentLevel];
 
         patternElement.innerHTML = "";
 
+
+        // Display existing numbers
         currentPattern.numbers.forEach((number) => {
 
             const numberElement = document.createElement("span");
@@ -109,6 +118,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
 
+        // Display missing number
         const missingElement = document.createElement("span");
 
         missingElement.classList.add("missing");
@@ -117,15 +127,20 @@ document.addEventListener("DOMContentLoaded", () => {
         patternElement.appendChild(missingElement);
 
 
+        // Update game information
         levelElement.textContent = currentLevel + 1;
         scoreElement.textContent = score;
 
+
+        // Reset answer area
         answerInput.value = "";
         feedbackElement.textContent = "";
 
         submitButton.hidden = false;
         nextLevelButton.hidden = true;
 
+
+        // Focus the input
         answerInput.focus();
     }
 
@@ -136,21 +151,36 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function checkAnswer() {
 
-        const userAnswer = Number(answerInput.value);
+        // Prevent duplicate scoring
+        if (answered) {
+            return;
+        }
 
+
+        // Make sure the player entered something
         if (answerInput.value === "") {
 
-            feedbackElement.textContent = "Enter an answer first.";
+            feedbackElement.textContent =
+                "Enter an answer first.";
 
             return;
         }
 
 
+        const userAnswer = Number(answerInput.value);
         const correctAnswer = patterns[currentLevel].answer;
 
 
+        /* =====================================
+           CORRECT ANSWER
+           ===================================== */
+
         if (userAnswer === correctAnswer) {
 
+            // Lock this level immediately
+            answered = true;
+
+            // Add score once
             score += 100;
 
             scoreElement.textContent = score;
@@ -158,13 +188,19 @@ document.addEventListener("DOMContentLoaded", () => {
             feedbackElement.textContent =
                 "Correct! Nice work.";
 
+            // Prevent another submission
             submitButton.hidden = true;
 
+
+            // More levels available
             if (currentLevel < patterns.length - 1) {
 
                 nextLevelButton.hidden = false;
 
-            } else {
+            }
+
+            // Final level completed
+            else {
 
                 feedbackElement.textContent =
                     "Perfect! You completed every level.";
@@ -172,7 +208,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 restartButton.hidden = false;
             }
 
-        } else {
+        }
+
+
+        /* =====================================
+           WRONG ANSWER
+           ===================================== */
+
+        else {
 
             feedbackElement.textContent =
                 "Not quite. Try again.";
