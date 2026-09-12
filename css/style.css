@@ -1733,3 +1733,213 @@ body.light-mode .login-btn {
     }
 
 }
+/* =========================
+   PLAYER SYSTEM
+========================= */
+
+.player-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    min-height: 42px;
+    padding: 0 15px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--card-bg);
+    color: var(--text);
+    font: inherit;
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition:
+        transform 0.25s ease,
+        border-color 0.25s ease,
+        background 0.25s ease;
+}
+
+.player-btn:hover {
+    transform: translateY(-2px);
+    border-color: var(--accent);
+}
+
+.player-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 10px var(--accent);
+}
+
+/* PLAYER MODAL */
+
+.player-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: grid;
+    place-items: center;
+    padding: 20px;
+}
+
+.player-modal[hidden] {
+    display: none;
+}
+
+.player-modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.68);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+.player-modal-card {
+    position: relative;
+    z-index: 1;
+    width: min(100%, 480px);
+    padding: 42px;
+    border: 1px solid var(--border);
+    border-radius: 28px;
+    background: var(--card-bg);
+    box-shadow: var(--shadow);
+    animation: playerModalIn 0.35s ease both;
+}
+
+.player-modal-close {
+    position: absolute;
+    top: 16px;
+    right: 18px;
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    background: transparent;
+    color: var(--text);
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.player-modal-close:hover {
+    transform: rotate(90deg);
+    border-color: var(--accent);
+}
+
+.player-modal-label {
+    display: block;
+    margin-bottom: 14px;
+    color: var(--accent);
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+}
+
+.player-modal-card h2 {
+    margin: 0;
+    font-size: clamp(2.4rem, 7vw, 4rem);
+    line-height: 0.95;
+    letter-spacing: -0.05em;
+}
+
+.player-modal-card h2 span {
+    color: var(--accent);
+}
+
+.player-modal-card > p {
+    margin: 20px 0 30px;
+    color: var(--text-muted);
+    line-height: 1.7;
+}
+
+#player-form label {
+    display: block;
+    margin-bottom: 9px;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+}
+
+#player-input {
+    width: 100%;
+    min-height: 54px;
+    padding: 0 16px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    outline: none;
+    background: var(--surface);
+    color: var(--text);
+    font: inherit;
+    font-size: 1rem;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+#player-input::placeholder {
+    color: var(--text-muted);
+}
+
+#player-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.player-error {
+    min-height: 22px;
+    margin: 8px 0 4px;
+    color: #ff6b6b;
+    font-size: 0.8rem;
+}
+
+.player-submit {
+    width: 100%;
+    margin-top: 4px;
+}
+
+@keyframes playerModalIn {
+    from {
+        opacity: 0;
+        transform: translateY(18px) scale(0.97);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@media (max-width: 600px) {
+
+    .player-btn {
+        padding: 0 12px;
+    }
+
+    .player-modal {
+        padding: 14px;
+    }
+
+    .player-modal-card {
+        padding: 34px 24px 28px;
+        border-radius: 22px;
+    }
+
+    .player-modal-card h2 {
+        font-size: 2.8rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .player-modal-card {
+        animation: none;
+    }
+
+    .player-btn,
+    .player-modal-close {
+        transition: none;
+    }
+}
