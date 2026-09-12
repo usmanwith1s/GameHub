@@ -156,10 +156,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
    GameHub.saveScore = async function (scoreData) {
-
     const currentPlayer =
         localStorage.getItem("gamehubPlayer") || "Guest";
 
+    // Guests can play, but their scores are not submitted.
+    if (
+        !currentPlayer ||
+        currentPlayer.trim().toLowerCase() === "guest"
+    ) {
+        console.log(
+            "GameHub: Guest score not submitted to leaderboard."
+        );
+        return null;
+    }
 
     const scoreRecord = {
 
