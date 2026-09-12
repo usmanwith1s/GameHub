@@ -71,6 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function savePlayer(username) {
 
         localStorage.setItem("gamehubPlayer", username);
+        updateLeaderboardPlayerNote();
 
         savedPlayer = username;
 
