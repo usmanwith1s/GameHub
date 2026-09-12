@@ -322,6 +322,68 @@
 
 
     <script src="js/script.js"></script>
+<!-- PLAYER MODAL -->
 
+<div class="player-modal" id="player-modal" hidden>
+
+    <div class="player-modal-backdrop" id="player-modal-backdrop"></div>
+
+    <div
+        class="player-modal-card"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="player-modal-title"
+    >
+
+        <button
+            type="button"
+            class="player-modal-close"
+            id="player-modal-close"
+            aria-label="Close"
+        >
+            ×
+        </button>
+
+        <span class="player-modal-label">
+            GAMEHUB PLAYER
+        </span>
+
+        <h2 id="player-modal-title">
+            Who's <span>playing?</span>
+        </h2>
+
+        <p>
+            Choose a username to track your scores across GameHub.
+        </p>
+
+        <form id="player-form">
+
+            <label for="player-input">
+                USERNAME
+            </label>
+
+            <input
+                type="text"
+                id="player-input"
+                maxlength="20"
+                placeholder="Enter your username"
+                autocomplete="off"
+            >
+
+            <p
+                class="player-error"
+                id="player-error"
+                aria-live="polite"
+            ></p>
+
+            <button type="submit" class="primary-btn player-submit">
+                Continue →
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
 </body>
 </html>
