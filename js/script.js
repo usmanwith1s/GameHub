@@ -422,6 +422,15 @@ if (leaderboardGame) {
         renderLeaderboard
     );
 }
+    const leaderboardRefresh =
+    document.getElementById("leaderboard-refresh");
+
+if (leaderboardRefresh) {
+    leaderboardRefresh.addEventListener(
+        "click",
+        renderLeaderboard
+    );
+}
 
 
 renderLeaderboard();
