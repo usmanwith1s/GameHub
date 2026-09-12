@@ -1521,6 +1521,15 @@ body.light-mode .login-btn {
 }
 
 @media (max-width: 700px) {
+   .leaderboard-controls {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+
+#leaderboard-game {
+    width: 100%;
+    min-width: 0;
+}
 
     .game-topbar {
         grid-template-columns: repeat(2, 1fr);
@@ -2146,4 +2155,66 @@ body.light-mode .login-btn {
     .leaderboard-you {
         display: none;
     }
+}
+/* =========================
+   LEADERBOARD FILTER
+========================= */
+
+.leaderboard-controls {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.leaderboard-controls label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    color: var(--muted);
+}
+
+#leaderboard-game {
+    appearance: none;
+    -webkit-appearance: none;
+
+    min-width: 190px;
+    padding: 12px 42px 12px 15px;
+
+    border: 1px solid var(--border);
+    border-radius: 12px;
+
+    background:
+        linear-gradient(45deg, transparent 50%, var(--muted) 50%) calc(100% - 19px) 50% / 6px 6px no-repeat,
+        linear-gradient(135deg, var(--muted) 50%, transparent 50%) calc(100% - 14px) 50% / 6px 6px no-repeat,
+        var(--glass);
+
+    color: var(--text);
+    font: inherit;
+    font-size: 0.88rem;
+    font-weight: 600;
+
+    outline: none;
+    cursor: pointer;
+
+    transition:
+        border-color 0.25s ease,
+        box-shadow 0.25s ease,
+        transform 0.25s ease;
+}
+
+#leaderboard-game:hover {
+    border-color: var(--accent);
+    transform: translateY(-1px);
+}
+
+#leaderboard-game:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+#leaderboard-game option {
+    background: var(--bg);
+    color: var(--text);
 }
