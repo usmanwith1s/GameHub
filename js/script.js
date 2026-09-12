@@ -68,17 +68,18 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    function savePlayer(username) {
+ function savePlayer(username) {
 
-        localStorage.setItem("gamehubPlayer", username);
-        updateLeaderboardPlayerNote();
+    localStorage.setItem("gamehubPlayer", username);
 
-        savedPlayer = username;
+    savedPlayer = username;
 
-        if (playerNameElement) {
-            playerNameElement.textContent = username;
-        }
+    if (playerNameElement) {
+        playerNameElement.textContent = username;
     }
+
+    updateLeaderboardPlayerNote();
+}
 
 
     if (playerButton) {
