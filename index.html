@@ -251,28 +251,55 @@
         <!-- =========================
              LEADERBOARD
         ========================== -->
+<section id="leaderboard" class="leaderboard-section">
 
-        <section id="leaderboard" class="leaderboard-section">
+    <div class="section-heading">
 
-            <div class="section-heading">
+        <span class="section-label">
+            LEADERBOARD
+        </span>
 
-                <span class="section-label">
-                    LEADERBOARD
-                </span>
+        <h2>
+            Who's on top?
+        </h2>
 
-                <h2>
-                    Who's on top?
-                </h2>
+        <p>
+            The best runs on GameHub.
+        </p>
 
-            </div>
+    </div>
 
-            <div class="leaderboard-placeholder">
-                <p>
-                    Leaderboards coming soon.
-                </p>
-            </div>
+    <div class="leaderboard-controls">
 
-        </section>
+        <label for="leaderboard-game">
+            GAME
+        </label>
+
+        <select id="leaderboard-game">
+            <option value="all">All Games</option>
+            <option value="Number Pattern">Number Pattern</option>
+        </select>
+
+    </div>
+
+    <div class="leaderboard-board">
+
+        <div class="leaderboard-header">
+            <span>RANK</span>
+            <span>PLAYER</span>
+            <span>GAME</span>
+            <span>SCORE</span>
+        </div>
+
+        <div
+            class="leaderboard-list"
+            id="leaderboard-list"
+            aria-live="polite"
+        ></div>
+
+    </div>
+
+</section>
 
 
         <!-- =========================
