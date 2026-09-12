@@ -284,11 +284,7 @@ async function getScores() {
 
 
 async function renderLeaderboard() {
-
-    if (!leaderboardList) {
-        return;
-    }
-
+    if (!leaderboardList) return;
 
     leaderboardList.innerHTML = `
         <div class="leaderboard-empty">
@@ -296,99 +292,75 @@ async function renderLeaderboard() {
         </div>
     `;
 
-
-    const scores =
-        await getScores();
-
+    const scores = await getScores();
 
     leaderboardList.innerHTML = "";
 
-
     if (scores.length === 0) {
-
-        const emptyState =
-            document.createElement("div");
-
-        emptyState.className =
-            "leaderboard-empty";
-
+        const emptyState = document.createElement("div");
+        emptyState.className = "leaderboard-empty";
         emptyState.innerHTML = `
             <strong>No scores yet.</strong>
             Be the first player on the board.
         `;
-
-        leaderboardList.appendChild(
-            emptyState
-        );
-
+        leaderboardList.appendChild(emptyState);
         return;
     }
 
+    /*
+     * Keep only the BEST score for each player + game.
+     */
+    const bestScores = new Map();
+
+    scores.forEach((record) => {
+        const key = `${record.player}|||${record.game}`;
+        const existing = bestScores.get(key);
+
+        if (
+            !existing ||
+            Number(record.score) > Number(existing.score)
+        ) {
+            bestScores.set(key, record);
+        }
+    });
+
+    const leaderboardScores = Array.from(
+        bestScores.values()
+    ).sort(
+        (a, b) =>
+            Number(b.score) - Number(a.score)
+    );
 
     const currentPlayer =
         localStorage.getItem("gamehubPlayer");
 
+    leaderboardScores.forEach((record, index) => {
+        const rank = index + 1;
 
-    scores.forEach((record, index) => {
+        const row = document.createElement("div");
+        row.className = "leaderboard-row";
 
-        const rank =
-            index + 1;
+        if (rank === 1) row.classList.add("rank-one");
+        if (rank === 2) row.classList.add("rank-two");
+        if (rank === 3) row.classList.add("rank-three");
 
-
-        const row =
-            document.createElement("div");
-
-        row.className =
-            "leaderboard-row";
-
-
-        if (rank === 1) {
-            row.classList.add("rank-one");
-        }
-
-
-        if (rank === 2) {
-            row.classList.add("rank-two");
-        }
-
-
-        if (rank === 3) {
-            row.classList.add("rank-three");
-        }
-
-
-        const rankElement =
-            document.createElement("div");
-
-        rankElement.className =
-            "leaderboard-rank";
-
+        const rankElement = document.createElement("div");
+        rankElement.className = "leaderboard-rank";
 
         if (rank === 1) {
-
             rankElement.textContent = "🥇";
-
         } else if (rank === 2) {
-
             rankElement.textContent = "🥈";
-
         } else if (rank === 3) {
-
             rankElement.textContent = "🥉";
-
         } else {
-
             rankElement.textContent =
                 String(rank).padStart(2, "0");
         }
 
-
-        const playerElement =
-            document.createElement("div");
-
+        const playerElement = document.createElement("div");
         playerElement.className =
             "leaderboard-player";
-
 
         const playerName =
             document.createElement("span");
@@ -396,40 +368,25 @@ async function renderLeaderboard() {
         playerName.className =
             "leaderboard-player-name";
 
-        playerName.textContent =
-            record.player;
-
+        playerName.textContent = record.player;
 
         if (
             currentPlayer &&
             record.player === currentPlayer
         ) {
-
             const youBadge =
                 document.createElement("span");
 
             youBadge.className =
                 "leaderboard-you";
 
-            youBadge.textContent =
-                "YOU";
+            youBadge.textContent = "YOU";
 
-
-            playerElement.appendChild(
-                playerName
-            );
-
-            playerElement.appendChild(
-                youBadge
-            );
-
+            playerElement.appendChild(playerName);
+            playerElement.appendChild(youBadge);
         } else {
-
-            playerElement.appendChild(
-                playerName
-            );
+            playerElement.appendChild(playerName);
         }
-
 
         const gameElement =
             document.createElement("div");
@@ -437,9 +394,7 @@ async function renderLeaderboard() {
         gameElement.className =
             "leaderboard-game-name";
 
-        gameElement.textContent =
-            record.game;
-
+        gameElement.textContent = record.game;
 
         const scoreElement =
             document.createElement("div");
@@ -450,27 +405,12 @@ async function renderLeaderboard() {
         scoreElement.textContent =
             Number(record.score).toLocaleString();
 
+        row.appendChild(rankElement);
+        row.appendChild(playerElement);
+        row.appendChild(gameElement);
+        row.appendChild(scoreElement);
 
-        row.appendChild(
-            rankElement
-        );
-
-        row.appendChild(
-            playerElement
-        );
-
-        row.appendChild(
-            gameElement
-        );
-
-        row.appendChild(
-            scoreElement
-        );
-
-
-        leaderboardList.appendChild(
-            row
-        );
+        leaderboardList.appendChild(row);
     });
 }
 
