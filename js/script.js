@@ -219,252 +219,272 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 };
 
-    // =========================
-    // LEADERBOARD
-    // =========================
+   // =========================
+// LEADERBOARD
+// =========================
 
-    const leaderboardList =
-        document.getElementById("leaderboard-list");
+const leaderboardList =
+    document.getElementById("leaderboard-list");
 
-    const leaderboardGame =
-        document.getElementById("leaderboard-game");
+const leaderboardGame =
+    document.getElementById("leaderboard-game");
 
 
-    function getScores() {
+async function getScores() {
 
-        try {
+    try {
 
-            const scores =
-                JSON.parse(
-                    localStorage.getItem("gamehubScores") || "[]"
-                );
+        let query = supabaseClient
+            .from("game_scores")
+            .select("*")
+            .order("score", { ascending: false });
 
-            if (!Array.isArray(scores)) {
-                return [];
-            }
 
-            return scores.filter((record) =>
-                record &&
-                typeof record.player === "string" &&
-                typeof record.game === "string" &&
-                Number.isFinite(Number(record.score))
+        if (
+            leaderboardGame &&
+            leaderboardGame.value !== "all"
+        ) {
+
+            query = query.eq(
+                "game",
+                leaderboardGame.value
             );
+        }
 
-        } catch (error) {
+
+        const { data, error } =
+            await query;
+
+
+        if (error) {
 
             console.error(
-                "Could not read GameHub scores:",
+                "Could not read GameHub scores from Supabase:",
                 error
             );
 
             return [];
         }
+
+
+        return Array.isArray(data)
+            ? data
+            : [];
+
+    } catch (error) {
+
+        console.error(
+            "GameHub Supabase leaderboard connection error:",
+            error
+        );
+
+        return [];
+    }
+}
+
+
+async function renderLeaderboard() {
+
+    if (!leaderboardList) {
+        return;
     }
 
 
-    function renderLeaderboard() {
+    leaderboardList.innerHTML = `
+        <div class="leaderboard-empty">
+            Loading scores...
+        </div>
+    `;
 
-        if (!leaderboardList) {
-            return;
+
+    const scores =
+        await getScores();
+
+
+    leaderboardList.innerHTML = "";
+
+
+    if (scores.length === 0) {
+
+        const emptyState =
+            document.createElement("div");
+
+        emptyState.className =
+            "leaderboard-empty";
+
+        emptyState.innerHTML = `
+            <strong>No scores yet.</strong>
+            Be the first player on the board.
+        `;
+
+        leaderboardList.appendChild(
+            emptyState
+        );
+
+        return;
+    }
+
+
+    const currentPlayer =
+        localStorage.getItem("gamehubPlayer");
+
+
+    scores.forEach((record, index) => {
+
+        const rank =
+            index + 1;
+
+
+        const row =
+            document.createElement("div");
+
+        row.className =
+            "leaderboard-row";
+
+
+        if (rank === 1) {
+            row.classList.add("rank-one");
         }
 
 
-        const selectedGame =
-            leaderboardGame
-                ? leaderboardGame.value
-                : "all";
-
-
-        let scores = getScores();
-
-
-        if (selectedGame !== "all") {
-
-            scores = scores.filter(
-                (record) =>
-                    record.game === selectedGame
-            );
+        if (rank === 2) {
+            row.classList.add("rank-two");
         }
 
 
-        scores.sort((a, b) => {
-
-            const scoreDifference =
-                Number(b.score) - Number(a.score);
-
-            if (scoreDifference !== 0) {
-                return scoreDifference;
-            }
-
-            return new Date(a.date) -
-                new Date(b.date);
-        });
-
-
-        leaderboardList.innerHTML = "";
-
-
-        if (scores.length === 0) {
-
-            const emptyState =
-                document.createElement("div");
-
-            emptyState.className =
-                "leaderboard-empty";
-
-            emptyState.innerHTML = `
-                <strong>No scores yet.</strong>
-                Be the first player on the board.
-            `;
-
-            leaderboardList.appendChild(
-                emptyState
-            );
-
-            return;
+        if (rank === 3) {
+            row.classList.add("rank-three");
         }
 
 
-        const currentPlayer =
-            localStorage.getItem("gamehubPlayer");
+        const rankElement =
+            document.createElement("div");
+
+        rankElement.className =
+            "leaderboard-rank";
 
 
-        scores.forEach((record, index) => {
+        if (rank === 1) {
 
-            const rank =
-                index + 1;
+            rankElement.textContent = "🥇";
 
+        } else if (rank === 2) {
 
-            const row =
-                document.createElement("div");
+            rankElement.textContent = "🥈";
 
-            row.className =
-                "leaderboard-row";
+        } else if (rank === 3) {
 
+            rankElement.textContent = "🥉";
 
-            if (rank === 1) {
-                row.classList.add("rank-one");
-            }
+        } else {
 
-            if (rank === 2) {
-                row.classList.add("rank-two");
-            }
-
-            if (rank === 3) {
-                row.classList.add("rank-three");
-            }
+            rankElement.textContent =
+                String(rank).padStart(2, "0");
+        }
 
 
-            const rankElement =
-                document.createElement("div");
+        const playerElement =
+            document.createElement("div");
 
-            rankElement.className =
-                "leaderboard-rank";
-
-
-            if (rank === 1) {
-                rankElement.textContent = "🥇";
-            } else if (rank === 2) {
-                rankElement.textContent = "🥈";
-            } else if (rank === 3) {
-                rankElement.textContent = "🥉";
-            } else {
-                rankElement.textContent =
-                    String(rank).padStart(2, "0");
-            }
+        playerElement.className =
+            "leaderboard-player";
 
 
-            const playerElement =
-                document.createElement("div");
+        const playerName =
+            document.createElement("span");
 
-            playerElement.className =
-                "leaderboard-player";
+        playerName.className =
+            "leaderboard-player-name";
+
+        playerName.textContent =
+            record.player;
 
 
-            const playerName =
+        if (
+            currentPlayer &&
+            record.player === currentPlayer
+        ) {
+
+            const youBadge =
                 document.createElement("span");
 
-            playerName.className =
-                "leaderboard-player-name";
+            youBadge.className =
+                "leaderboard-you";
 
-            playerName.textContent =
-                record.player;
-
-
-            if (
-                currentPlayer &&
-                record.player === currentPlayer
-            ) {
-
-                const youBadge =
-                    document.createElement("span");
-
-                youBadge.className =
-                    "leaderboard-you";
-
-                youBadge.textContent =
-                    "YOU";
-
-                playerElement.appendChild(
-                    playerName
-                );
-
-                playerElement.appendChild(
-                    youBadge
-                );
-
-            } else {
-
-                playerElement.appendChild(
-                    playerName
-                );
-            }
+            youBadge.textContent =
+                "YOU";
 
 
-            const gameElement =
-                document.createElement("div");
+            playerElement.appendChild(
+                playerName
+            );
 
-            gameElement.className =
-                "leaderboard-game-name";
+            playerElement.appendChild(
+                youBadge
+            );
 
-            gameElement.textContent =
-                record.game;
+        } else {
 
-
-            const scoreElement =
-                document.createElement("div");
-
-            scoreElement.className =
-                "leaderboard-score";
-
-            scoreElement.textContent =
-                Number(record.score).toLocaleString();
+            playerElement.appendChild(
+                playerName
+            );
+        }
 
 
-            row.appendChild(rankElement);
+        const gameElement =
+            document.createElement("div");
 
-            row.appendChild(playerElement);
+        gameElement.className =
+            "leaderboard-game-name";
 
-            row.appendChild(gameElement);
-
-            row.appendChild(scoreElement);
-
-
-            leaderboardList.appendChild(row);
-        });
-    }
+        gameElement.textContent =
+            record.game;
 
 
-    if (leaderboardGame) {
+        const scoreElement =
+            document.createElement("div");
 
-        leaderboardGame.addEventListener(
-            "change",
-            renderLeaderboard
+        scoreElement.className =
+            "leaderboard-score";
+
+        scoreElement.textContent =
+            Number(record.score).toLocaleString();
+
+
+        row.appendChild(
+            rankElement
         );
-    }
+
+        row.appendChild(
+            playerElement
+        );
+
+        row.appendChild(
+            gameElement
+        );
+
+        row.appendChild(
+            scoreElement
+        );
 
 
-    renderLeaderboard();
+        leaderboardList.appendChild(
+            row
+        );
+    });
+}
+
+
+if (leaderboardGame) {
+
+    leaderboardGame.addEventListener(
+        "change",
+        renderLeaderboard
+    );
+}
+
+
+renderLeaderboard();
     // =========================
     // NUMBER PATTERN GAME
     // =========================
