@@ -15,6 +15,103 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
     }
+        // =========================
+    // PLAYER SYSTEM
+    // =========================
+
+    const playerButton = document.getElementById("player-btn");
+    const playerNameElement = document.getElementById("player-name");
+
+    const playerModal = document.getElementById("player-modal");
+    const playerModalClose = document.getElementById("player-modal-close");
+    const playerModalBackdrop = document.getElementById("player-modal-backdrop");
+
+    const playerForm = document.getElementById("player-form");
+    const playerInput = document.getElementById("player-input");
+    const playerError = document.getElementById("player-error");
+
+    const savedPlayer = localStorage.getItem("gamehubPlayer");
+
+    if (savedPlayer && playerNameElement) {
+        playerNameElement.textContent = savedPlayer;
+    }
+
+    function openPlayerModal() {
+        if (!playerModal) return;
+
+        playerModal.hidden = false;
+        playerError.textContent = "";
+
+        if (savedPlayer) {
+            playerInput.value = savedPlayer;
+        }
+
+        setTimeout(() => {
+            playerInput.focus();
+        }, 50);
+    }
+
+    function closePlayerModal() {
+        if (!playerModal) return;
+
+        playerModal.hidden = true;
+        playerError.textContent = "";
+    }
+
+    function savePlayer(username) {
+        localStorage.setItem("gamehubPlayer", username);
+
+        if (playerNameElement) {
+            playerNameElement.textContent = username;
+        }
+    }
+
+    if (playerButton) {
+        playerButton.addEventListener("click", openPlayerModal);
+    }
+
+    if (playerModalClose) {
+        playerModalClose.addEventListener("click", closePlayerModal);
+    }
+
+    if (playerModalBackdrop) {
+        playerModalBackdrop.addEventListener("click", closePlayerModal);
+    }
+
+    if (playerForm) {
+        playerForm.addEventListener("submit", (event) => {
+            event.preventDefault();
+
+            const username = playerInput.value.trim();
+
+            if (username.length < 3) {
+                playerError.textContent =
+                    "Username must be at least 3 characters.";
+                return;
+            }
+
+            if (username.length > 20) {
+                playerError.textContent =
+                    "Username must be 20 characters or fewer.";
+                return;
+            }
+
+            if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+                playerError.textContent =
+                    "Use only letters, numbers, and underscores.";
+                return;
+            }
+
+            savePlayer(username);
+            closePlayerModal();
+        });
+    }
+
+    document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && playerModal && !playerModal.hidden) {
+            closePlayerModal();
+        }
+    });
 
 
     /* =========================================
@@ -858,5 +955,6 @@ document.addEventListener("DOMContentLoaded", () => {
        ========================================= */
 
     displayPattern();
+    
 
 });
