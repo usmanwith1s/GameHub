@@ -16,6 +16,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
     }
         // =========================
+    // GAME PLAYER
+    // =========================
+
+    const gamePlayerElement = document.getElementById("game-player");
+
+    if (gamePlayerElement) {
+        const currentPlayer = localStorage.getItem("gamehubPlayer");
+
+        if (currentPlayer) {
+            gamePlayerElement.textContent = currentPlayer;
+        } else {
+            gamePlayerElement.textContent = "Guest";
+        }
+    }
+        // =========================
     // PLAYER SYSTEM
     // =========================
 
