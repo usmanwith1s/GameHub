@@ -276,9 +276,14 @@ async function getScores() {
         }
 
 
-        return Array.isArray(data)
-            ? data
-            : [];
+       return Array.isArray(data)
+    ? data.filter(
+        (record) =>
+            record &&
+            typeof record.player === "string" &&
+            record.player.trim().toLowerCase() !== "guest"
+    )
+    : [];
 
     } catch (error) {
 
