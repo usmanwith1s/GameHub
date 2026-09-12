@@ -1,36 +1,20 @@
+```javascript
 document.addEventListener("DOMContentLoaded", () => {
 
-    /* =========================================
-       THEME TOGGLE
-       ========================================= */
+    // =========================
+    // THEME
+    // =========================
 
     const themeToggle = document.querySelector(".theme-toggle");
 
     if (themeToggle) {
-
         themeToggle.addEventListener("click", () => {
-
             document.body.classList.toggle("light-mode");
-
         });
-
     }
-        // =========================
-    // GAME PLAYER
+
+
     // =========================
-
-    const gamePlayerElement = document.getElementById("game-player");
-
-    if (gamePlayerElement) {
-        const currentPlayer = localStorage.getItem("gamehubPlayer");
-
-        if (currentPlayer) {
-            gamePlayerElement.textContent = currentPlayer;
-        } else {
-            gamePlayerElement.textContent = "Guest";
-        }
-    }
-        // =========================
     // PLAYER SYSTEM
     // =========================
 
@@ -45,13 +29,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const playerInput = document.getElementById("player-input");
     const playerError = document.getElementById("player-error");
 
-    const savedPlayer = localStorage.getItem("gamehubPlayer");
+    let savedPlayer = localStorage.getItem("gamehubPlayer");
 
     if (savedPlayer && playerNameElement) {
         playerNameElement.textContent = savedPlayer;
     }
 
+
     function openPlayerModal() {
+
         if (!playerModal) return;
 
         playerModal.hidden = false;
@@ -66,105 +52,169 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 50);
     }
 
+
     function closePlayerModal() {
+
         if (!playerModal) return;
 
         playerModal.hidden = true;
         playerError.textContent = "";
     }
 
+
     function savePlayer(username) {
+
         localStorage.setItem("gamehubPlayer", username);
+
+        savedPlayer = username;
 
         if (playerNameElement) {
             playerNameElement.textContent = username;
         }
     }
 
+
     if (playerButton) {
         playerButton.addEventListener("click", openPlayerModal);
     }
+
 
     if (playerModalClose) {
         playerModalClose.addEventListener("click", closePlayerModal);
     }
 
+
     if (playerModalBackdrop) {
         playerModalBackdrop.addEventListener("click", closePlayerModal);
     }
 
+
     if (playerForm) {
+
         playerForm.addEventListener("submit", (event) => {
+
             event.preventDefault();
 
             const username = playerInput.value.trim();
 
             if (username.length < 3) {
+
                 playerError.textContent =
                     "Username must be at least 3 characters.";
+
                 return;
             }
+
 
             if (username.length > 20) {
+
                 playerError.textContent =
                     "Username must be 20 characters or fewer.";
+
                 return;
             }
 
+
             if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+
                 playerError.textContent =
                     "Use only letters, numbers, and underscores.";
+
                 return;
             }
+
 
             savePlayer(username);
             closePlayerModal();
         });
     }
 
+
     document.addEventListener("keydown", (event) => {
-        if (event.key === "Escape" && playerModal && !playerModal.hidden) {
+
+        if (
+            event.key === "Escape" &&
+            playerModal &&
+            !playerModal.hidden
+        ) {
             closePlayerModal();
         }
     });
 
 
-    /* =========================================
-       NUMBER PATTERN GAME
-       ========================================= */
+    // =========================
+    // GAMEHUB SCORE SYSTEM
+    // =========================
 
-    const patternElement =
-        document.getElementById("pattern");
-
-
-    // Stop here on pages that are not the game page
-
-    if (!patternElement) {
-        return;
-    }
+    window.GameHub = window.GameHub || {};
 
 
-    /* =========================================
-       ELEMENTS
-       ========================================= */
+    GameHub.saveScore = function (scoreData) {
 
-    const levelElement =
-        document.getElementById("level");
+        const currentPlayer =
+            localStorage.getItem("gamehubPlayer") || "Guest";
 
-    const scoreElement =
-        document.getElementById("score");
 
-    const livesElement =
-        document.getElementById("lives");
+        const scoreRecord = {
 
-    const streakElement =
-        document.getElementById("streak");
+            player: currentPlayer,
 
-    const timerElement =
-        document.getElementById("timer");
+            game: scoreData.game || "Unknown Game",
 
-    const timerStat =
-        document.querySelector(".timer-stat");
+            score: Number(scoreData.score) || 0,
+
+            level: Number(scoreData.level) || 1,
+
+            bestStreak: Number(scoreData.bestStreak) || 0,
+
+            lives: Number(scoreData.lives) || 0,
+
+            completed: Boolean(scoreData.completed),
+
+            date: new Date().toISOString()
+        };
+
+
+        const existingScores =
+            JSON.parse(
+                localStorage.getItem("gamehubScores") || "[]"
+            );
+
+
+        existingScores.push(scoreRecord);
+
+
+        localStorage.setItem(
+            "gamehubScores",
+            JSON.stringify(existingScores)
+        );
+
+
+        console.log("GameHub score saved:", scoreRecord);
+
+
+        return scoreRecord;
+    };
+
+
+    // =========================
+    // NUMBER PATTERN GAME
+    // =========================
+
+    const patternElement = document.getElementById("pattern");
+
+    if (!patternElement) return;
+
+
+    const levelElement = document.getElementById("level");
+    const scoreElement = document.getElementById("score");
+    const livesElement = document.getElementById("lives");
+    const streakElement = document.getElementById("streak");
+    const timerElement = document.getElementById("timer");
+    const timerStat = document.querySelector(".timer-stat");
+
+    const gamePlayerElement =
+        document.getElementById("game-player");
 
     const answerInput =
         document.getElementById("answer");
@@ -203,19 +253,23 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("play-again");
 
 
-    /* =========================================
-       GAME DATA
-       ========================================= */
+    // =========================
+    // CURRENT PLAYER
+    // =========================
 
-    /*
-     * Difficulty increases through:
-     *
-     * Level 1-2  → simple arithmetic
-     * Level 3-4  → multiplication / squares
-     * Level 5-6  → changing differences
-     * Level 7-8  → alternating patterns
-     * Level 9-10 → advanced sequences
-     */
+    if (gamePlayerElement) {
+
+        const currentPlayer =
+            localStorage.getItem("gamehubPlayer");
+
+        gamePlayerElement.textContent =
+            currentPlayer || "Guest";
+    }
+
+
+    // =========================
+    // PATTERNS
+    // =========================
 
     const patterns = [
 
@@ -278,22 +332,17 @@ document.addEventListener("DOMContentLoaded", () => {
             answer: 95,
             time: 12
         }
-
     ];
 
-
-    /* =========================================
-       GAME SETTINGS
-       ========================================= */
 
     const STARTING_LIVES = 3;
 
     const MAX_STREAK_MULTIPLIER = 5;
 
 
-    /* =========================================
-       GAME STATE
-       ========================================= */
+    // =========================
+    // GAME STATE
+    // =========================
 
     let currentLevel = 0;
 
@@ -314,34 +363,30 @@ document.addEventListener("DOMContentLoaded", () => {
     let gameOver = false;
 
 
-    /* =========================================
-       UPDATE LIVES
-       ========================================= */
+    // =========================
+    // LIVES
+    // =========================
 
     function updateLives() {
 
         livesElement.textContent =
             "♥".repeat(lives) +
-            "♡".repeat(STARTING_LIVES - lives);
-
+            "♡".repeat(
+                STARTING_LIVES - lives
+            );
     }
 
 
-    /* =========================================
-       UPDATE STREAK
-       ========================================= */
+    // =========================
+    // STREAK
+    // =========================
 
     function updateStreak() {
 
         streakElement.textContent =
             `${streak}×`;
-
     }
 
-
-    /* =========================================
-       GET MULTIPLIER
-       ========================================= */
 
     function getMultiplier() {
 
@@ -353,29 +398,20 @@ document.addEventListener("DOMContentLoaded", () => {
             1 + ((streak - 1) * 0.5),
             MAX_STREAK_MULTIPLIER
         );
-
     }
 
-
-    /* =========================================
-       CALCULATE POINTS
-       ========================================= */
 
     function calculatePoints() {
 
-        const multiplier =
-            getMultiplier();
-
         return Math.round(
-            100 * multiplier
+            100 * getMultiplier()
         );
-
     }
 
 
-    /* =========================================
-       STOP TIMER
-       ========================================= */
+    // =========================
+    // TIMER
+    // =========================
 
     function stopTimer() {
 
@@ -384,88 +420,72 @@ document.addEventListener("DOMContentLoaded", () => {
             clearInterval(timerInterval);
 
             timerInterval = null;
-
         }
-
     }
 
-
-    /* =========================================
-       UPDATE TIMER DISPLAY
-       ========================================= */
 
     function updateTimerDisplay() {
 
         timerElement.textContent =
             timeLeft;
 
-
         if (timeLeft <= 5) {
 
-            timerStat.classList.add("warning");
+            timerStat.classList.add(
+                "warning"
+            );
 
         } else {
 
-            timerStat.classList.remove("warning");
-
+            timerStat.classList.remove(
+                "warning"
+            );
         }
-
     }
 
-
-    /* =========================================
-       START TIMER
-       ========================================= */
 
     function startTimer() {
 
         stopTimer();
 
-
         const currentPattern =
             patterns[currentLevel];
-
 
         timeLeft =
             currentPattern.time;
 
-
         updateTimerDisplay();
 
 
-        timerInterval =
-            setInterval(() => {
+        timerInterval = setInterval(() => {
 
-                if (gameOver || answered) {
+            if (gameOver || answered) {
 
-                    stopTimer();
+                stopTimer();
 
-                    return;
-
-                }
+                return;
+            }
 
 
-                timeLeft--;
+            timeLeft--;
 
-                updateTimerDisplay();
+            updateTimerDisplay();
 
 
-                if (timeLeft <= 0) {
+            if (timeLeft <= 0) {
 
-                    stopTimer();
+                stopTimer();
 
-                    handleTimeOut();
+                handleTimeOut();
+            }
 
-                }
-
-            }, 1000);
-
+        }, 1000);
     }
 
 
-    /* =========================================
-       HANDLE TIME OUT
-       ========================================= */
+    // =========================
+    // TIMEOUT
+    // =========================
 
     function handleTimeOut() {
 
@@ -478,7 +498,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         streak = 0;
 
-
         updateLives();
 
         updateStreak();
@@ -486,10 +505,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (lives <= 0) {
 
-            endGame("Time ran out.");
+            endGame(
+                "Time ran out."
+            );
 
             return;
-
         }
 
 
@@ -497,28 +517,21 @@ document.addEventListener("DOMContentLoaded", () => {
             `Time's up! You lost a life. ${lives} remaining. Streak reset.`;
 
 
-        /*
-         * The player gets another attempt
-         * at the same level.
-         */
-
         answerInput.value = "";
 
         startTimer();
 
         answerInput.focus();
-
     }
 
 
-    /* =========================================
-       DISPLAY PATTERN
-       ========================================= */
+    // =========================
+    // DISPLAY PATTERN
+    // =========================
 
     function displayPattern() {
 
         answered = false;
-
 
         const currentPattern =
             patterns[currentLevel];
@@ -539,7 +552,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 patternElement.appendChild(
                     numberElement
                 );
-
             }
         );
 
@@ -547,15 +559,11 @@ document.addEventListener("DOMContentLoaded", () => {
         const missingElement =
             document.createElement("span");
 
-
         missingElement.classList.add(
             "missing"
         );
 
-
-        missingElement.textContent =
-            "?";
-
+        missingElement.textContent = "?";
 
         patternElement.appendChild(
             missingElement
@@ -564,7 +572,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         levelElement.textContent =
             currentLevel + 1;
-
 
         scoreElement.textContent =
             score;
@@ -594,18 +601,42 @@ document.addEventListener("DOMContentLoaded", () => {
         startTimer();
 
         answerInput.focus();
-
     }
 
 
-    /* =========================================
-       END GAME
-       ========================================= */
+    // =========================
+    // SAVE FINAL SCORE
+    // =========================
+
+    function saveFinalScore(completed) {
+
+        GameHub.saveScore({
+
+            game: "Number Pattern",
+
+            score: score,
+
+            level: Math.min(
+                currentLevel + 1,
+                patterns.length
+            ),
+
+            bestStreak: bestStreak,
+
+            lives: lives,
+
+            completed: completed
+        });
+    }
+
+
+    // =========================
+    // GAME OVER
+    // =========================
 
     function endGame(reason) {
 
         gameOver = true;
-
 
         stopTimer();
 
@@ -622,11 +653,6 @@ document.addEventListener("DOMContentLoaded", () => {
         );
 
 
-        /*
-         * currentLevel is zero-based,
-         * so add one for the level reached.
-         */
-
         const levelReached =
             Math.min(
                 currentLevel + 1,
@@ -637,38 +663,35 @@ document.addEventListener("DOMContentLoaded", () => {
         finalScoreElement.textContent =
             score;
 
-
         finalLevelElement.textContent =
             levelReached;
-
 
         finalStreakElement.textContent =
             `${bestStreak}×`;
 
-
         finalLivesElement.textContent =
             lives;
-
 
         finalMessage.textContent =
             reason;
 
 
+        saveFinalScore(false);
+
+
         activeGame.hidden = true;
 
         finalScreen.hidden = false;
-
     }
 
 
-    /* =========================================
-       COMPLETE GAME
-       ========================================= */
+    // =========================
+    // COMPLETE GAME
+    // =========================
 
     function completeGame() {
 
         gameOver = true;
-
 
         stopTimer();
 
@@ -681,14 +704,11 @@ document.addEventListener("DOMContentLoaded", () => {
         finalScoreElement.textContent =
             score;
 
-
         finalLevelElement.textContent =
             patterns.length;
 
-
         finalStreakElement.textContent =
             `${bestStreak}×`;
-
 
         finalLivesElement.textContent =
             lives;
@@ -698,16 +718,18 @@ document.addEventListener("DOMContentLoaded", () => {
             "Incredible run! You completed every pattern.";
 
 
+        saveFinalScore(true);
+
+
         activeGame.hidden = true;
 
         finalScreen.hidden = false;
-
     }
 
 
-    /* =========================================
-       MOVE TO NEXT LEVEL
-       ========================================= */
+    // =========================
+    // NEXT LEVEL
+    // =========================
 
     function goToNextLevel() {
 
@@ -716,7 +738,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
-        if (currentLevel < patterns.length - 1) {
+        if (
+            currentLevel <
+            patterns.length - 1
+        ) {
 
             currentLevel++;
 
@@ -725,15 +750,13 @@ document.addEventListener("DOMContentLoaded", () => {
         } else {
 
             completeGame();
-
         }
-
     }
 
 
-    /* =========================================
-       CHECK ANSWER
-       ========================================= */
+    // =========================
+    // CHECK ANSWER
+    // =========================
 
     function checkAnswer() {
 
@@ -742,19 +765,11 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
-        /*
-         * First Enter checks the answer.
-         *
-         * Second Enter after a correct
-         * answer advances the level.
-         */
-
         if (answered) {
 
             goToNextLevel();
 
             return;
-
         }
 
 
@@ -764,29 +779,27 @@ document.addEventListener("DOMContentLoaded", () => {
                 "Enter an answer first.";
 
             return;
-
         }
 
 
         const userAnswer =
             Number(answerInput.value);
 
-
         const correctAnswer =
             patterns[currentLevel].answer;
 
 
-        /* =========================================
-           CORRECT
-           ========================================= */
+        // =========================
+        // CORRECT
+        // =========================
 
-        if (userAnswer === correctAnswer) {
+        if (
+            userAnswer === correctAnswer
+        ) {
 
             answered = true;
 
-
             stopTimer();
-
 
             streak++;
 
@@ -794,7 +807,6 @@ document.addEventListener("DOMContentLoaded", () => {
             if (streak > bestStreak) {
 
                 bestStreak = streak;
-
             }
 
 
@@ -828,6 +840,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 nextLevelButton.hidden = true;
 
+
                 completeGame();
 
             } else {
@@ -838,17 +851,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 submitButton.hidden = true;
 
                 nextLevelButton.hidden = false;
-
             }
 
-        }
 
+        // =========================
+        // WRONG
+        // =========================
 
-        /* =========================================
-           WRONG
-           ========================================= */
-
-        else {
+        } else {
 
             lives--;
 
@@ -863,7 +873,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (lives <= 0) {
 
                 endGame(
-                    `Game Over! You ran out of lives.`
+                    "Game Over! You ran out of lives."
                 );
 
             } else {
@@ -872,41 +882,28 @@ document.addEventListener("DOMContentLoaded", () => {
                     `Not quite. You lost a life. ${lives} remaining. Streak reset.`;
 
                 answerInput.select();
-
             }
-
         }
-
     }
 
 
-    /* =========================================
-       NEXT LEVEL BUTTON
-       ========================================= */
+    // =========================
+    // EVENT LISTENERS
+    // =========================
 
     nextLevelButton.addEventListener(
         "click",
         () => {
-
             goToNextLevel();
-
         }
     );
 
-
-    /* =========================================
-       SUBMIT BUTTON
-       ========================================= */
 
     submitButton.addEventListener(
         "click",
         checkAnswer
     );
 
-
-    /* =========================================
-       ENTER KEY
-       ========================================= */
 
     answerInput.addEventListener(
         "keydown",
@@ -917,16 +914,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 event.preventDefault();
 
                 checkAnswer();
-
             }
-
         }
     );
 
 
-    /* =========================================
-       PLAY AGAIN
-       ========================================= */
+    // =========================
+    // PLAY AGAIN
+    // =========================
 
     playAgainButton.addEventListener(
         "click",
@@ -948,7 +943,6 @@ document.addEventListener("DOMContentLoaded", () => {
             timeLeft =
                 patterns[0].time;
 
-
             answered = false;
 
             gameOver = false;
@@ -960,16 +954,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
             displayPattern();
-
         }
     );
 
 
-    /* =========================================
-       START GAME
-       ========================================= */
+    // =========================
+    // START GAME
+    // =========================
 
     displayPattern();
-    
 
 });
+```
