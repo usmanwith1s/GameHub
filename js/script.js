@@ -196,7 +196,252 @@ document.addEventListener("DOMContentLoaded", () => {
         return scoreRecord;
     };
 
+    // =========================
+    // LEADERBOARD
+    // =========================
 
+    const leaderboardList =
+        document.getElementById("leaderboard-list");
+
+    const leaderboardGame =
+        document.getElementById("leaderboard-game");
+
+
+    function getScores() {
+
+        try {
+
+            const scores =
+                JSON.parse(
+                    localStorage.getItem("gamehubScores") || "[]"
+                );
+
+            if (!Array.isArray(scores)) {
+                return [];
+            }
+
+            return scores.filter((record) =>
+                record &&
+                typeof record.player === "string" &&
+                typeof record.game === "string" &&
+                Number.isFinite(Number(record.score))
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Could not read GameHub scores:",
+                error
+            );
+
+            return [];
+        }
+    }
+
+
+    function renderLeaderboard() {
+
+        if (!leaderboardList) {
+            return;
+        }
+
+
+        const selectedGame =
+            leaderboardGame
+                ? leaderboardGame.value
+                : "all";
+
+
+        let scores = getScores();
+
+
+        if (selectedGame !== "all") {
+
+            scores = scores.filter(
+                (record) =>
+                    record.game === selectedGame
+            );
+        }
+
+
+        scores.sort((a, b) => {
+
+            const scoreDifference =
+                Number(b.score) - Number(a.score);
+
+            if (scoreDifference !== 0) {
+                return scoreDifference;
+            }
+
+            return new Date(a.date) -
+                new Date(b.date);
+        });
+
+
+        leaderboardList.innerHTML = "";
+
+
+        if (scores.length === 0) {
+
+            const emptyState =
+                document.createElement("div");
+
+            emptyState.className =
+                "leaderboard-empty";
+
+            emptyState.innerHTML = `
+                <strong>No scores yet.</strong>
+                Be the first player on the board.
+            `;
+
+            leaderboardList.appendChild(
+                emptyState
+            );
+
+            return;
+        }
+
+
+        const currentPlayer =
+            localStorage.getItem("gamehubPlayer");
+
+
+        scores.forEach((record, index) => {
+
+            const rank =
+                index + 1;
+
+
+            const row =
+                document.createElement("div");
+
+            row.className =
+                "leaderboard-row";
+
+
+            if (rank === 1) {
+                row.classList.add("rank-one");
+            }
+
+            if (rank === 2) {
+                row.classList.add("rank-two");
+            }
+
+            if (rank === 3) {
+                row.classList.add("rank-three");
+            }
+
+
+            const rankElement =
+                document.createElement("div");
+
+            rankElement.className =
+                "leaderboard-rank";
+
+
+            if (rank === 1) {
+                rankElement.textContent = "🥇";
+            } else if (rank === 2) {
+                rankElement.textContent = "🥈";
+            } else if (rank === 3) {
+                rankElement.textContent = "🥉";
+            } else {
+                rankElement.textContent =
+                    String(rank).padStart(2, "0");
+            }
+
+
+            const playerElement =
+                document.createElement("div");
+
+            playerElement.className =
+                "leaderboard-player";
+
+
+            const playerName =
+                document.createElement("span");
+
+            playerName.className =
+                "leaderboard-player-name";
+
+            playerName.textContent =
+                record.player;
+
+
+            if (
+                currentPlayer &&
+                record.player === currentPlayer
+            ) {
+
+                const youBadge =
+                    document.createElement("span");
+
+                youBadge.className =
+                    "leaderboard-you";
+
+                youBadge.textContent =
+                    "YOU";
+
+                playerElement.appendChild(
+                    playerName
+                );
+
+                playerElement.appendChild(
+                    youBadge
+                );
+
+            } else {
+
+                playerElement.appendChild(
+                    playerName
+                );
+            }
+
+
+            const gameElement =
+                document.createElement("div");
+
+            gameElement.className =
+                "leaderboard-game-name";
+
+            gameElement.textContent =
+                record.game;
+
+
+            const scoreElement =
+                document.createElement("div");
+
+            scoreElement.className =
+                "leaderboard-score";
+
+            scoreElement.textContent =
+                Number(record.score).toLocaleString();
+
+
+            row.appendChild(rankElement);
+
+            row.appendChild(playerElement);
+
+            row.appendChild(gameElement);
+
+            row.appendChild(scoreElement);
+
+
+            leaderboardList.appendChild(row);
+        });
+    }
+
+
+    if (leaderboardGame) {
+
+        leaderboardGame.addEventListener(
+            "change",
+            renderLeaderboard
+        );
+    }
+
+
+    renderLeaderboard();
     // =========================
     // NUMBER PATTERN GAME
     // =========================
