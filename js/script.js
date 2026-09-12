@@ -155,52 +155,69 @@ document.addEventListener("DOMContentLoaded", () => {
     window.GameHub = window.GameHub || {};
 
 
-    GameHub.saveScore = function (scoreData) {
+   GameHub.saveScore = async function (scoreData) {
 
-        const currentPlayer =
-            localStorage.getItem("gamehubPlayer") || "Guest";
-
-
-        const scoreRecord = {
-
-            player: currentPlayer,
-
-            game: scoreData.game || "Unknown Game",
-
-            score: Number(scoreData.score) || 0,
-
-            level: Number(scoreData.level) || 1,
-
-            bestStreak: Number(scoreData.bestStreak) || 0,
-
-            lives: Number(scoreData.lives) || 0,
-
-            completed: Boolean(scoreData.completed),
-
-            date: new Date().toISOString()
-        };
+    const currentPlayer =
+        localStorage.getItem("gamehubPlayer") || "Guest";
 
 
-        const existingScores =
-            JSON.parse(
-                localStorage.getItem("gamehubScores") || "[]"
+    const scoreRecord = {
+
+        player: currentPlayer,
+
+        game: scoreData.game || "Unknown Game",
+
+        score: Number(scoreData.score) || 0,
+
+        level: Number(scoreData.level) || 1,
+
+        best_streak: Number(scoreData.bestStreak) || 0,
+
+        lives: Number(scoreData.lives) || 0,
+
+        completed: Boolean(scoreData.completed)
+    };
+
+
+    try {
+
+        const { data, error } =
+            await supabaseClient
+                .from("game_scores")
+                .insert(scoreRecord)
+                .select()
+                .single();
+
+
+        if (error) {
+
+            console.error(
+                "GameHub Supabase score error:",
+                error
             );
 
+            return null;
+        }
 
-        existingScores.push(scoreRecord);
 
-
-        localStorage.setItem(
-            "gamehubScores",
-            JSON.stringify(existingScores)
+        console.log(
+            "GameHub score saved to Supabase:",
+            data
         );
 
 
-        console.log("GameHub score saved:", scoreRecord);
+        return data;
 
+    } catch (error) {
 
-        return scoreRecord;
-    };
+        console.error(
+            "GameHub Supabase connection error:",
+            error
+        );
+
+        return null;
+    }
+};
 
     // =========================
     // LEADERBOARD
