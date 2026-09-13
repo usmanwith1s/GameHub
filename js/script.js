@@ -234,7 +234,42 @@ document.addEventListener("DOMContentLoaded", () => {
    // =========================
 // LEADERBOARD
 // =========================
+const leaderboardPlayerMessage =
+    document.getElementById("leaderboard-player-message");
 
+const leaderboardNameButton =
+    document.getElementById("leaderboard-name-btn");
+
+function updateLeaderboardPlayerNote() {
+
+    if (
+        !leaderboardPlayerMessage ||
+        !leaderboardNameButton
+    ) {
+        return;
+    }
+
+    const currentPlayer =
+        localStorage.getItem("gamehubPlayer") || "Guest";
+
+    const isGuest =
+        currentPlayer.trim().toLowerCase() === "guest";
+
+    if (isGuest) {
+
+        leaderboardPlayerMessage.textContent =
+            "Playing as Guest? Choose a gamer name to appear on the leaderboard.";
+
+        leaderboardNameButton.hidden = false;
+
+    } else {
+
+        leaderboardPlayerMessage.textContent =
+            `Playing as ${currentPlayer}. Your best scores appear here.`;
+
+        leaderboardNameButton.hidden = true;
+    }
+}
 const leaderboardList =
     document.getElementById("leaderboard-list");
 
