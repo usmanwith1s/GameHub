@@ -561,7 +561,51 @@ button {
 /* =========================================================
    LEADERBOARD
 ========================================================= */
+.leaderboard-player-note {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 18px;
+    padding: 14px 16px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--glass);
+    color: var(--muted);
+    font-size: 0.85rem;
+    line-height: 1.5;
+}
 
+.leaderboard-player-note span {
+    min-width: 0;
+}
+
+.leaderboard-name-btn {
+    flex-shrink: 0;
+    padding: 9px 14px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: transparent;
+    color: var(--text);
+    font: inherit;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition:
+        border-color 0.25s ease,
+        color 0.25s ease,
+        transform 0.25s ease;
+}
+
+.leaderboard-name-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateY(-1px);
+}
+
+.leaderboard-name-btn:active {
+    transform: translateY(0);
+}
 .leaderboard-placeholder {
     min-height: 250px;
 
@@ -1521,6 +1565,14 @@ body.light-mode .login-btn {
 }
 
 @media (max-width: 700px) {
+   .leaderboard-player-note {
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+.leaderboard-name-btn {
+    width: 100%;
+}
    .leaderboard-controls {
     justify-content: flex-start;
     flex-wrap: wrap;
