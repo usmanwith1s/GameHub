@@ -246,8 +246,7 @@ if (leaderboardNameButton) {
 const leaderboardPlayerMessage =
     document.getElementById("leaderboard-player-message");
 
-const leaderboardNameButton =
-    document.getElementById("leaderboard-name-btn");
+
 
 function updateLeaderboardPlayerNote() {
 
