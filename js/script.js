@@ -486,6 +486,7 @@ if (leaderboardRefresh) {
 
 
 renderLeaderboard();
+    updateLeaderboardPlayerNote();
     // =========================
     // NUMBER PATTERN GAME
     // =========================
