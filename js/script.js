@@ -85,6 +85,15 @@ document.addEventListener("DOMContentLoaded", () => {
     if (playerButton) {
         playerButton.addEventListener("click", openPlayerModal);
     }
+    const leaderboardNameButton =
+    document.getElementById("leaderboard-name-btn");
+
+if (leaderboardNameButton) {
+    leaderboardNameButton.addEventListener(
+        "click",
+        openPlayerModal
+    );
+}
    
 
 
