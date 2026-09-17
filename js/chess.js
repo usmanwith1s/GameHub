@@ -45,6 +45,20 @@ const statusElement =
 
 const newMatchButton =
     document.getElementById("new-match");
+const gameOverOverlay =
+    document.getElementById("game-over-overlay");
+
+const gameOverLabel =
+    document.getElementById("game-over-label");
+
+const gameOverTitle =
+    document.getElementById("game-over-title");
+
+const gameOverSubtitle =
+    document.getElementById("game-over-subtitle");
+
+const rematchButton =
+    document.getElementById("rematch-button");
 
 
 /* =========================================================
@@ -1888,19 +1902,22 @@ function updateGameStatus(
         nextLegalMoves.length === 0
     ) {
 
-        gameOver = true;
+       gameOver = true;
 
+turnDisplay.textContent =
+    "Game Over";
 
-        turnDisplay.textContent =
-            "Game Over";
+turnMessage.textContent =
+    `Checkmate — ${movingColorName} wins.`;
 
+statusElement.textContent =
+    `CHECKMATE — ${movingColorName} wins!`;
 
-        turnMessage.textContent =
-            `Checkmate — ${movingColorName} wins.`;
-
-
-        statusElement.textContent =
-            `CHECKMATE — ${movingColorName} wins!`;
+showGameOver(
+    "CHECKMATE",
+    `${movingColorName} Wins`,
+    "The king has no legal escape."
+);
 
 
         statusElement.classList.add(
@@ -1937,6 +1954,11 @@ function updateGameStatus(
 
         statusElement.textContent =
             "STALEMATE — The game is a draw.";
+       showGameOver(
+    "STALEMATE",
+    "Draw",
+    "Neither side has a legal move."
+);
 
 
         statusElement.classList.add(
@@ -2905,7 +2927,55 @@ newMatchButton.addEventListener(
     }
 );
 
+/* =========================================================
+   SHOW GAME OVER
+========================================================= */
 
+function showGameOver(
+    label,
+    title,
+    subtitle
+) {
+
+    gameOverLabel.textContent =
+        label;
+
+    gameOverTitle.textContent =
+        title;
+
+    gameOverSubtitle.textContent =
+        subtitle;
+
+    gameOverOverlay.classList.add(
+        "active"
+    );
+
+}
+/* =========================================================
+   HIDE GAME OVER
+========================================================= */
+
+function hideGameOver() {
+
+    gameOverOverlay.classList.remove(
+        "active"
+    );
+
+}
+/* =========================================================
+   REMATCH
+========================================================= */
+
+rematchButton.addEventListener(
+    "click",
+    () => {
+
+        hideGameOver();
+
+        resetGame();
+
+    }
+);
 /* =========================================================
    INITIALIZE
    ========================================================= */
