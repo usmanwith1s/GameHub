@@ -2096,20 +2096,23 @@ showGameOver(
        CHECK
        ========================================================= */
 
-    if (
-        nextColorInCheck
-    ) {
+ if (
+    nextColorInCheck
+) {
 
-        statusElement.textContent =
-            `CHECK — ${nextColorName}'s king is under attack.`;
+    statusElement.textContent =
+        `CHECK — ${nextColorName}'s king is under attack.`;
 
-        statusElement.classList.add(
-            "accent"
-        );
+    statusElement.classList.add(
+        "accent"
+    );
 
+    turnMessage.textContent =
+        `${nextColorName} is in check.`;
 
-        turnMessage.textContent =
-            `${nextColorName} is in check.`;
+    flashCheckedKing(
+        nextColor
+    );
 
     } else {
 
