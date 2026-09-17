@@ -40,32 +40,32 @@ const CHESS_AI_PROFILES = {
     centerBias: 0.80
 },
 
-    Grandmaster: {
-        depth: 3,
-        randomness: 0.035,
-        topChoices: 2,
-        thinkDelay: 850,
-        captureBias: 1.20,
-        centerBias: 0.70
-    },
+  Grandmaster: {
+    depth: 4,
+    randomness: 0.015,
+    topChoices: 1,
+    thinkDelay: 950,
+    captureBias: 1.40,
+    centerBias: 0.85
+},
 
-    Magnus: {
-        depth: 4,
-        randomness: 0.015,
-        topChoices: 1,
-        thinkDelay: 950,
-        captureBias: 1.25,
-        centerBias: 0.85
-    },
+Magnus: {
+    depth: 5,
+    randomness: 0.005,
+    topChoices: 1,
+    thinkDelay: 1200,
+    captureBias: 1.50,
+    centerBias: 0.95
+},
 
-    CPU: {
-        depth: 4,
-        randomness: 0.005,
-        topChoices: 1,
-        thinkDelay: 1100,
-        captureBias: 1.35,
-        centerBias: 1.00
-    }
+CPU: {
+    depth: 5,
+    randomness: 0.00,
+    topChoices: 1,
+    thinkDelay: 1400,
+    captureBias: 1.60,
+    centerBias: 1.15
+}
 
 };
 
