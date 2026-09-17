@@ -7,7 +7,7 @@
     <title>Chess | GameHub</title>
     <meta
         name="description"
-        content="Play Chess on GameHub. Choose your opponent and outplay the machine."
+        content="Play Chess on GameHub. Challenge the machine or play offline with a friend."
     >
 
     <link rel="stylesheet" href="../css/style.css">
@@ -22,9 +22,9 @@
             padding-bottom: 80px;
         }
 
-        /* ---------------------------------------------------------
+        /* =========================================================
            OPPONENT SELECTION
-        --------------------------------------------------------- */
+        ========================================================= */
 
         .opponent-section {
             width: 100%;
@@ -38,7 +38,7 @@
         .opponent-heading span {
             display: block;
             color: var(--muted);
-            font-size: 0.82rem;
+            font-size: 0.76rem;
             letter-spacing: 0.18em;
             margin-bottom: 9px;
             text-transform: uppercase;
@@ -46,7 +46,7 @@
 
         .opponent-heading h2 {
             margin: 0;
-            font-size: clamp(1.5rem, 3vw, 2.1rem);
+            font-size: clamp(1.45rem, 3vw, 2.1rem);
         }
 
         .opponent-grid {
@@ -57,9 +57,11 @@
 
         .opponent-card {
             position: relative;
+
             min-width: 0;
-            min-height: 180px;
-            padding: 24px 20px;
+            min-height: 185px;
+
+            padding: 22px;
 
             border: 1px solid var(--border);
             border-radius: 20px;
@@ -67,128 +69,135 @@
             background:
                 linear-gradient(
                     145deg,
-                    rgba(255, 255, 255, 0.055),
-                    rgba(255, 255, 255, 0.018)
+                    rgba(255,255,255,0.055),
+                    rgba(255,255,255,0.012)
                 );
+
+            color: var(--text);
+
+            text-align: left;
+
+            cursor: pointer;
 
             display: flex;
             flex-direction: column;
             justify-content: space-between;
 
-            text-align: left;
-            cursor: pointer;
-
             transition:
-                border-color 0.2s ease,
-                transform 0.2s ease,
-                background 0.2s ease,
-                box-shadow 0.2s ease;
+                transform 0.22s ease,
+                border-color 0.22s ease,
+                background 0.22s ease,
+                box-shadow 0.22s ease;
         }
 
         .opponent-card:hover {
             transform: translateY(-4px);
-            border-color: rgba(156, 255, 0, 0.35);
+            border-color: rgba(156,255,0,0.35);
         }
 
         .opponent-card.selected {
             border-color: var(--accent);
+
             background:
                 linear-gradient(
                     145deg,
-                    rgba(156, 255, 0, 0.10),
-                    rgba(156, 255, 0, 0.025)
+                    rgba(156,255,0,0.10),
+                    rgba(156,255,0,0.018)
                 );
-            box-shadow: 0 0 28px rgba(156, 255, 0, 0.08);
+
+            box-shadow:
+                0 0 0 1px rgba(156,255,0,0.12),
+                0 0 28px rgba(156,255,0,0.07);
         }
 
         .opponent-top {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
+
             gap: 12px;
         }
 
         .opponent-name {
-            font-size: 1.2rem;
-            font-weight: 700;
+            font-size: 1.15rem;
+            font-weight: 800;
         }
 
         .opponent-rating {
             flex-shrink: 0;
-            padding: 6px 9px;
-            border-radius: 999px;
-            border: 1px solid var(--border);
 
-            font-size: 0.72rem;
-            font-weight: 700;
-            letter-spacing: 0.04em;
+            padding: 6px 9px;
+
+            border: 1px solid rgba(156,255,0,0.2);
+            border-radius: 999px;
+
             color: var(--accent);
+
+            font-size: 0.69rem;
+            font-weight: 800;
+            letter-spacing: 0.04em;
+        }
+
+        .friend-badge {
+            color: var(--accent);
+            border-color: rgba(156,255,0,0.42);
         }
 
         .opponent-description {
-            margin: 18px 0 0;
+            margin: 15px 0 0;
+
             color: var(--muted);
-            font-size: 0.88rem;
+
+            font-size: 0.84rem;
             line-height: 1.6;
         }
 
-        .opponent-selected {
-            margin-top: 16px;
-            color: var(--accent);
-            font-size: 0.74rem;
-            font-weight: 700;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            opacity: 0;
-            transition: opacity 0.2s ease;
-        }
+        /* ---------------------------------------------------------
+           CARD START BUTTON
+        --------------------------------------------------------- */
 
-        .opponent-card.selected .opponent-selected {
-            opacity: 1;
-        }
+        .card-start-btn {
+            display: none;
 
-        .start-match-wrap {
-            margin-top: 26px;
-            display: flex;
-            justify-content: center;
-        }
+            width: 100%;
+            min-height: 43px;
 
-        .start-match-btn {
-            min-width: 210px;
-            min-height: 50px;
-            padding: 12px 22px;
+            margin-top: 18px;
 
-            border: 1px solid rgba(156, 255, 0, 0.4);
-            border-radius: 999px;
+            border: 1px solid rgba(156,255,0,0.45);
+            border-radius: 12px;
 
             background: var(--accent);
-            color: #080808;
+            color: #070709;
 
-            font-size: 0.9rem;
-            font-weight: 800;
-            letter-spacing: 0.08em;
+            font-size: 0.74rem;
+            font-weight: 900;
+            letter-spacing: 0.09em;
             text-transform: uppercase;
 
             cursor: pointer;
 
             transition:
-                transform 0.2s ease,
-                box-shadow 0.2s ease,
-                opacity 0.2s ease;
+                transform 0.18s ease,
+                box-shadow 0.18s ease;
         }
 
-        .start-match-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(156, 255, 0, 0.18);
+        .opponent-card.selected .card-start-btn {
+            display: block;
         }
 
-        .start-match-btn:active {
+        .card-start-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 22px rgba(156,255,0,0.18);
+        }
+
+        .card-start-btn:active {
             transform: translateY(0);
         }
 
-        /* ---------------------------------------------------------
-           MATCH AREA
-        --------------------------------------------------------- */
+        /* =========================================================
+           CHESS MATCH
+        ========================================================= */
 
         .chess-match {
             display: none;
@@ -201,52 +210,54 @@
         .chess-topbar {
             display: grid;
             grid-template-columns: repeat(3, minmax(0, 1fr));
+
             gap: 12px;
-            margin-bottom: 26px;
+            margin-bottom: 24px;
         }
 
         .chess-stat {
             min-width: 0;
+
             padding: 15px 16px;
 
             border: 1px solid var(--border);
             border-radius: 15px;
 
-            background: rgba(255, 255, 255, 0.025);
+            background: rgba(255,255,255,0.025);
 
             text-align: center;
         }
 
         .chess-stat span {
             display: block;
+
             margin-bottom: 5px;
 
             color: var(--muted);
-            font-size: 0.65rem;
-            font-weight: 700;
+
+            font-size: 0.63rem;
+            font-weight: 800;
             letter-spacing: 0.16em;
             text-transform: uppercase;
         }
 
         .chess-stat strong {
             display: block;
-            min-width: 0;
 
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
 
-            font-size: 0.95rem;
+            font-size: 0.93rem;
         }
 
-        /* ---------------------------------------------------------
-           BOARD
-           IMPORTANT: THE BOARD IS A FIXED 8 x 8 GRID.
-           PIECES CANNOT CHANGE ROW/COLUMN SIZE.
-        --------------------------------------------------------- */
+        /* =========================================================
+           NEON CHESS BOARD
+        ========================================================= */
 
         .board-area {
             width: 100%;
+
             display: flex;
             justify-content: center;
             align-items: center;
@@ -258,46 +269,46 @@
 
         .chess-board {
             width: 100%;
+
+            /*
+                The most important sizing rule:
+                the board remains perfectly square.
+            */
             aspect-ratio: 1 / 1;
 
             display: grid;
 
-            /* EXACTLY 8 COLUMNS */
-            grid-template-columns:
-                repeat(8, minmax(0, 1fr));
-
-            /* EXACTLY 8 ROWS */
-            grid-template-rows:
-                repeat(8, minmax(0, 1fr));
-
-            /* Prevent grid content from affecting sizing */
-            grid-auto-rows: minmax(0, 1fr);
+            grid-template-columns: repeat(8, minmax(0, 1fr));
+            grid-template-rows: repeat(8, minmax(0, 1fr));
 
             overflow: hidden;
 
-            border: 1px solid rgba(255, 255, 255, 0.14);
-            border-radius: 18px;
+            border: 2px solid rgba(156,255,0,0.72);
+            border-radius: 16px;
+
+            background: #050605;
 
             box-shadow:
-                0 20px 60px rgba(0, 0, 0, 0.32),
-                0 0 0 1px rgba(255, 255, 255, 0.025);
+                0 0 0 1px rgba(156,255,0,0.10),
+                0 0 28px rgba(156,255,0,0.12),
+                0 22px 55px rgba(0,0,0,0.42);
 
             isolation: isolate;
         }
 
-        /* Every square is constrained equally */
         .chess-square {
             position: relative;
 
             min-width: 0;
             min-height: 0;
+
             width: 100%;
             height: 100%;
 
             padding: 0;
             margin: 0;
 
-            border: 0;
+            border: none;
             border-radius: 0;
 
             display: flex;
@@ -314,58 +325,91 @@
                 "Arial Unicode MS",
                 sans-serif;
 
-            transition: filter 0.12s ease;
+            transition:
+                filter 0.12s ease,
+                box-shadow 0.12s ease;
         }
 
-        .chess-square.light {
-            background: #e5e5df;
-        }
-
+        /* Dark / black squares */
         .chess-square.dark {
-            background: #36363b;
+            background:
+                radial-gradient(
+                    circle at center,
+                    rgba(156,255,0,0.025),
+                    rgba(0,0,0,0.98)
+                );
+        }
+
+        /* Green squares */
+        .chess-square.light {
+            background:
+                linear-gradient(
+                    145deg,
+                    #17351b,
+                    #0b1d0f
+                );
         }
 
         .chess-square:hover {
-            filter: brightness(1.08);
+            filter: brightness(1.2);
         }
 
         .chess-square.selected {
-            box-shadow: inset 0 0 0 4px rgba(156, 255, 0, 0.9);
+            z-index: 4;
+
+            box-shadow:
+                inset 0 0 0 3px var(--accent),
+                inset 0 0 22px rgba(156,255,0,0.16);
         }
 
         .chess-square.legal::after {
             content: "";
+
             position: absolute;
 
             width: 22%;
-            height: 22%;
+            aspect-ratio: 1;
 
             border-radius: 50%;
-            background: rgba(156, 255, 0, 0.72);
+
+            background: var(--accent);
+
+            box-shadow:
+                0 0 8px rgba(156,255,0,0.55),
+                0 0 18px rgba(156,255,0,0.22);
 
             pointer-events: none;
         }
 
         .chess-square.capture::after {
             content: "";
-            position: absolute;
-            inset: 7%;
 
-            border: 4px solid rgba(156, 255, 0, 0.82);
+            position: absolute;
+            inset: 8%;
+
+            border: 3px solid rgba(156,255,0,0.9);
             border-radius: 50%;
+
+            box-shadow:
+                0 0 10px rgba(156,255,0,0.18);
 
             pointer-events: none;
         }
 
-        /* The piece itself NEVER controls the square size */
+        /*
+            Piece dimensions are independent from the grid.
+            This prevents the piece from changing row height.
+        */
         .chess-piece {
             position: relative;
             z-index: 2;
 
-            display: block;
-
             width: 82%;
             height: 82%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
 
             line-height: 1;
             text-align: center;
@@ -375,22 +419,23 @@
             pointer-events: none;
             user-select: none;
 
-            transform: translateY(-2%);
+            transform: translateY(-1%);
         }
 
         .white-piece {
-            color: #ffffff;
+            color: #f7fff6;
 
             text-shadow:
-                0 2px 2px rgba(0, 0, 0, 0.75),
-                0 0 1px rgba(0, 0, 0, 0.9);
+                0 2px 2px rgba(0,0,0,0.88),
+                0 0 2px rgba(156,255,0,0.16);
         }
 
         .black-piece {
-            color: #161619;
+            color: #050605;
 
             text-shadow:
-                0 1px 1px rgba(255, 255, 255, 0.18);
+                0 0 2px rgba(156,255,0,0.18),
+                0 1px 1px rgba(255,255,255,0.14);
         }
 
         .rank-label,
@@ -400,8 +445,9 @@
 
             pointer-events: none;
 
-            font-size: clamp(0.5rem, 1.6vw, 0.68rem);
-            font-weight: 800;
+            font-size: clamp(0.48rem, 1.5vw, 0.66rem);
+            font-weight: 900;
+
             line-height: 1;
         }
 
@@ -417,17 +463,17 @@
 
         .chess-square.light .rank-label,
         .chess-square.light .file-label {
-            color: rgba(20, 20, 22, 0.56);
+            color: rgba(156,255,0,0.55);
         }
 
         .chess-square.dark .rank-label,
         .chess-square.dark .file-label {
-            color: rgba(255, 255, 255, 0.55);
+            color: rgba(156,255,0,0.42);
         }
 
-        /* ---------------------------------------------------------
+        /* =========================================================
            MATCH CONTROLS
-        --------------------------------------------------------- */
+        ========================================================= */
 
         .match-controls {
             margin-top: 22px;
@@ -435,13 +481,14 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+
             gap: 14px;
             flex-wrap: wrap;
         }
 
         .turn-message {
             color: var(--muted);
-            font-size: 0.88rem;
+            font-size: 0.84rem;
         }
 
         .turn-message strong {
@@ -450,16 +497,18 @@
 
         .control-btn {
             min-height: 44px;
+
             padding: 10px 17px;
 
             border: 1px solid var(--border);
             border-radius: 999px;
 
-            background: rgba(255, 255, 255, 0.025);
+            background: rgba(255,255,255,0.025);
             color: var(--text);
 
-            font-size: 0.75rem;
+            font-size: 0.73rem;
             font-weight: 800;
+
             letter-spacing: 0.08em;
             text-transform: uppercase;
 
@@ -471,17 +520,16 @@
         }
 
         .control-btn:hover {
-            border-color: rgba(156, 255, 0, 0.4);
-            background: rgba(156, 255, 0, 0.05);
+            border-color: rgba(156,255,0,0.42);
+
+            background:
+                rgba(156,255,0,0.05);
         }
 
-        /* ---------------------------------------------------------
-           MATCH STATUS
-        --------------------------------------------------------- */
-
         .chess-status {
-            margin-top: 18px;
             min-height: 22px;
+
+            margin-top: 17px;
 
             text-align: center;
 
@@ -493,27 +541,29 @@
             color: var(--accent);
         }
 
-        /* ---------------------------------------------------------
+        /* =========================================================
            INFO CARDS
-        --------------------------------------------------------- */
+        ========================================================= */
 
         .chess-info-grid {
             margin-top: 35px;
 
             display: grid;
             grid-template-columns: repeat(3, minmax(0, 1fr));
+
             gap: 16px;
         }
 
         .chess-info-card {
             min-width: 0;
             min-height: 150px;
+
             padding: 24px;
 
             border: 1px solid var(--border);
             border-radius: 18px;
 
-            background: rgba(255, 255, 255, 0.025);
+            background: rgba(255,255,255,0.025);
         }
 
         .chess-info-number {
@@ -526,31 +576,49 @@
 
             margin-bottom: 18px;
 
-            border: 1px solid rgba(156, 255, 0, 0.2);
+            border: 1px solid rgba(156,255,0,0.24);
             border-radius: 50%;
 
             color: var(--accent);
+
             font-size: 0.7rem;
-            font-weight: 800;
+            font-weight: 900;
         }
 
         .chess-info-card h3 {
             margin: 0 0 8px;
+
             font-size: 1rem;
         }
 
         .chess-info-card p {
             margin: 0;
+
             color: var(--muted);
+
             font-size: 0.82rem;
             line-height: 1.65;
         }
 
-        /* ---------------------------------------------------------
+        /* =========================================================
+           LIGHT MODE
+        ========================================================= */
+
+        body.light-mode .chess-board {
+            border-color: rgba(73,132,0,0.58);
+
+            box-shadow:
+                0 0 0 1px rgba(73,132,0,0.08),
+                0 0 25px rgba(73,132,0,0.08),
+                0 18px 45px rgba(0,0,0,0.15);
+        }
+
+        /* =========================================================
            RESPONSIVE
-        --------------------------------------------------------- */
+        ========================================================= */
 
         @media (max-width: 900px) {
+
             .opponent-grid,
             .chess-info-grid {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -558,13 +626,14 @@
         }
 
         @media (max-width: 700px) {
+
             .opponent-grid,
             .chess-info-grid {
                 grid-template-columns: 1fr;
             }
 
             .opponent-card {
-                min-height: 160px;
+                min-height: 165px;
             }
 
             .chess-topbar {
@@ -586,12 +655,13 @@
         }
 
         @media (max-width: 600px) {
+
             .chess-board {
-                border-radius: 12px;
+                border-radius: 11px;
             }
 
             .chess-piece {
-                font-size: clamp(1.65rem, 10vw, 3rem);
+                font-size: clamp(1.6rem, 10vw, 3rem);
             }
 
             .rank-label {
@@ -610,6 +680,7 @@
 <body>
 
 <header class="site-header">
+
     <nav class="navbar">
 
         <a href="../index.html" class="logo">
@@ -624,6 +695,7 @@
         </div>
 
         <div class="nav-actions">
+
             <button
                 class="theme-toggle"
                 type="button"
@@ -638,9 +710,11 @@
             >
                 Back to Games
             </a>
+
         </div>
 
     </nav>
+
 </header>
 
 
@@ -668,7 +742,7 @@
         </h1>
 
         <p>
-            Choose your opponent, then take your seat at the board.
+            Challenge the machine or sit across from a friend.
         </p>
 
     </section>
@@ -691,165 +765,314 @@
 
             <div class="opponent-heading">
                 <span>STEP 01</span>
-                <h2>Choose Your Opponent</h2>
+                <h2>Choose Your Match</h2>
             </div>
+
 
             <div class="opponent-grid">
 
-                <button
-                    type="button"
+
+                <!-- =================================================
+                     OFFLINE FRIEND
+                ================================================== -->
+
+                <div
                     class="opponent-card selected"
-                    data-name="Dora"
-                    data-rating="300"
+                    data-name="Friend"
+                    data-rating="Offline"
+                    data-mode="offline"
                 >
+
                     <div>
+
                         <div class="opponent-top">
-                            <div class="opponent-name">Dora</div>
-                            <div class="opponent-rating">300</div>
+
+                            <div class="opponent-name">
+                                Play Offline
+                            </div>
+
+                            <div class="opponent-rating friend-badge">
+                                2 PLAYER
+                            </div>
+
                         </div>
 
                         <p class="opponent-description">
-                            A relaxed beginner opponent. Good for learning
-                            the board and getting comfortable with the pieces.
+                            Play chess with a friend on the same device.
+                            Pass the device after every move and battle
+                            face to face.
                         </p>
+
                     </div>
 
-                    <div class="opponent-selected">
-                        Selected
+
+                    <button
+                        type="button"
+                        class="card-start-btn"
+                    >
+                        Play with a Friend
+                    </button>
+
+                </div>
+
+
+                <!-- =================================================
+                     DORA
+                ================================================== -->
+
+                <div
+                    class="opponent-card"
+                    data-name="Dora"
+                    data-rating="300"
+                    data-mode="ai"
+                >
+
+                    <div>
+
+                        <div class="opponent-top">
+
+                            <div class="opponent-name">
+                                Dora
+                            </div>
+
+                            <div class="opponent-rating">
+                                300
+                            </div>
+
+                        </div>
+
+                        <p class="opponent-description">
+                            A relaxed beginner opponent for learning the
+                            board and getting comfortable with chess.
+                        </p>
+
                     </div>
-                </button>
 
 
-                <button
-                    type="button"
+                    <button
+                        type="button"
+                        class="card-start-btn"
+                    >
+                        Start vs Dora
+                    </button>
+
+                </div>
+
+
+                <!-- =================================================
+                     ALEX
+                ================================================== -->
+
+                <div
                     class="opponent-card"
                     data-name="Alex"
                     data-rating="700"
+                    data-mode="ai"
                 >
+
                     <div>
+
                         <div class="opponent-top">
-                            <div class="opponent-name">Alex</div>
-                            <div class="opponent-rating">700</div>
+
+                            <div class="opponent-name">
+                                Alex
+                            </div>
+
+                            <div class="opponent-rating">
+                                700
+                            </div>
+
                         </div>
 
                         <p class="opponent-description">
-                            A more active opponent who starts looking for
-                            captures and useful attacking opportunities.
+                            A more active opponent that starts looking for
+                            captures and attacking opportunities.
                         </p>
+
                     </div>
 
-                    <div class="opponent-selected">
-                        Selected
-                    </div>
-                </button>
+
+                    <button
+                        type="button"
+                        class="card-start-btn"
+                    >
+                        Start vs Alex
+                    </button>
+
+                </div>
 
 
-                <button
-                    type="button"
+                <!-- =================================================
+                     USMAN
+                ================================================== -->
+
+                <div
                     class="opponent-card"
                     data-name="Usman"
                     data-rating="1500"
+                    data-mode="ai"
                 >
+
                     <div>
+
                         <div class="opponent-top">
-                            <div class="opponent-name">Usman</div>
-                            <div class="opponent-rating">1500</div>
+
+                            <div class="opponent-name">
+                                Usman
+                            </div>
+
+                            <div class="opponent-rating">
+                                1500
+                            </div>
+
                         </div>
 
                         <p class="opponent-description">
-                            A serious challenge with stronger tactical play
-                            and much less room for careless moves.
+                            A stronger challenge built around tactical
+                            play and punishing careless moves.
                         </p>
+
                     </div>
 
-                    <div class="opponent-selected">
-                        Selected
-                    </div>
-                </button>
+
+                    <button
+                        type="button"
+                        class="card-start-btn"
+                    >
+                        Start vs Usman
+                    </button>
+
+                </div>
 
 
-                <button
-                    type="button"
+                <!-- =================================================
+                     GRANDMASTER
+                ================================================== -->
+
+                <div
                     class="opponent-card"
                     data-name="Grandmaster"
                     data-rating="2000"
+                    data-mode="ai"
                 >
+
                     <div>
+
                         <div class="opponent-top">
-                            <div class="opponent-name">Grandmaster</div>
-                            <div class="opponent-rating">2000</div>
+
+                            <div class="opponent-name">
+                                Grandmaster
+                            </div>
+
+                            <div class="opponent-rating">
+                                2000
+                            </div>
+
                         </div>
 
                         <p class="opponent-description">
-                            A significantly tougher opponent built around
-                            deeper tactical decisions.
+                            A much tougher opponent designed around deeper
+                            tactical decisions.
                         </p>
+
                     </div>
 
-                    <div class="opponent-selected">
-                        Selected
-                    </div>
-                </button>
+
+                    <button
+                        type="button"
+                        class="card-start-btn"
+                    >
+                        Start vs Grandmaster
+                    </button>
+
+                </div>
 
 
-                <button
-                    type="button"
+                <!-- =================================================
+                     MAGNUS
+                ================================================== -->
+
+                <div
                     class="opponent-card"
                     data-name="Magnus"
                     data-rating="2800"
+                    data-mode="ai"
                 >
+
                     <div>
+
                         <div class="opponent-top">
-                            <div class="opponent-name">Magnus</div>
-                            <div class="opponent-rating">2800</div>
+
+                            <div class="opponent-name">
+                                Magnus
+                            </div>
+
+                            <div class="opponent-rating">
+                                2800
+                            </div>
+
                         </div>
 
                         <p class="opponent-description">
-                            Designed as an extreme challenge for players who
-                            want a much harder match.
+                            An extreme challenge for players looking for
+                            a very demanding match.
                         </p>
+
                     </div>
 
-                    <div class="opponent-selected">
-                        Selected
-                    </div>
-                </button>
+
+                    <button
+                        type="button"
+                        class="card-start-btn"
+                    >
+                        Start vs Magnus
+                    </button>
+
+                </div>
 
 
-                <button
-                    type="button"
+                <!-- =================================================
+                     CPU
+                ================================================== -->
+
+                <div
                     class="opponent-card"
                     data-name="CPU"
                     data-rating="3500"
+                    data-mode="ai"
                 >
+
                     <div>
+
                         <div class="opponent-top">
-                            <div class="opponent-name">CPU</div>
-                            <div class="opponent-rating">3500</div>
+
+                            <div class="opponent-name">
+                                CPU
+                            </div>
+
+                            <div class="opponent-rating">
+                                3500
+                            </div>
+
                         </div>
 
                         <p class="opponent-description">
-                            The ultimate GameHub challenge. Built to represent
+                            The ultimate GameHub challenge, representing
                             the hardest selectable machine opponent.
                         </p>
+
                     </div>
 
-                    <div class="opponent-selected">
-                        Selected
-                    </div>
-                </button>
 
-            </div>
+                    <button
+                        type="button"
+                        class="card-start-btn"
+                    >
+                        Start vs CPU
+                    </button>
 
+                </div>
 
-            <div class="start-match-wrap">
-                <button
-                    type="button"
-                    id="start-match"
-                    class="start-match-btn"
-                >
-                    Start Match
-                </button>
             </div>
 
         </div>
@@ -868,17 +1091,23 @@
 
                 <div class="chess-stat">
                     <span>Player</span>
-                    <strong id="game-player">Guest</strong>
+                    <strong id="game-player">
+                        Guest
+                    </strong>
                 </div>
 
                 <div class="chess-stat">
                     <span>Opponent</span>
-                    <strong id="opponent-display">Dora</strong>
+                    <strong id="opponent-display">
+                        Friend
+                    </strong>
                 </div>
 
                 <div class="chess-stat">
                     <span>Turn</span>
-                    <strong id="turn-display">White</strong>
+                    <strong id="turn-display">
+                        White
+                    </strong>
                 </div>
 
             </div>
@@ -892,8 +1121,7 @@
                         id="chess-board"
                         class="chess-board"
                         aria-label="Chess board"
-                    >
-                    </div>
+                    ></div>
 
                 </div>
 
@@ -911,8 +1139,11 @@
 
             <div class="match-controls">
 
-                <div class="turn-message">
-                    You are playing as <strong>White</strong>.
+                <div
+                    id="turn-message"
+                    class="turn-message"
+                >
+                    White's turn.
                 </div>
 
                 <button
@@ -937,38 +1168,56 @@
     <section class="chess-info-grid">
 
         <article class="chess-info-card">
-            <div class="chess-info-number">01</div>
 
-            <h3>Choose a Rival</h3>
+            <div class="chess-info-number">
+                01
+            </div>
+
+            <h3>
+                Play Together
+            </h3>
 
             <p>
-                Pick the opponent that matches the level of challenge
-                you want to face.
+                Two players can share one device and take turns on
+                the same board.
             </p>
+
         </article>
 
 
         <article class="chess-info-card">
-            <div class="chess-info-number">02</div>
 
-            <h3>Read the Board</h3>
+            <div class="chess-info-number">
+                02
+            </div>
+
+            <h3>
+                Read the Board
+            </h3>
 
             <p>
-                Select one of your pieces to reveal its available
-                destinations.
+                Select a piece to reveal its available destinations
+                before making your move.
             </p>
+
         </article>
 
 
         <article class="chess-info-card">
-            <div class="chess-info-number">03</div>
 
-            <h3>Outplay the Machine</h3>
+            <div class="chess-info-number">
+                03
+            </div>
+
+            <h3>
+                Challenge the Machine
+            </h3>
 
             <p>
-                Build your position, protect your pieces and look for
-                tactical opportunities.
+                Different opponents will eventually use different
+                playing styles and difficulty levels.
             </p>
+
         </article>
 
     </section>
@@ -977,9 +1226,11 @@
 
 
 <footer class="site-footer">
+
     <p>
         © 2026 GameHub. Built by Usman.
     </p>
+
 </footer>
 
 
@@ -988,9 +1239,10 @@
 
 <script>
     /* =============================================================
-       CHESS GAME FOUNDATION
-       Basic movement + captures.
-       Check, checkmate, castling, promotion and AI come later.
+       CHESS FOUNDATION
+       Offline two-player mode is supported.
+       AI opponents are prepared as selectable modes; their engines
+       will be added in the next stage.
     ============================================================= */
 
     const opponentCards =
@@ -1002,17 +1254,14 @@
     const chessMatch =
         document.getElementById("chess-match");
 
-    const startMatchButton =
-        document.getElementById("start-match");
-
-    const newMatchButton =
-        document.getElementById("new-match");
-
     const opponentDisplay =
         document.getElementById("opponent-display");
 
     const turnDisplay =
         document.getElementById("turn-display");
+
+    const turnMessage =
+        document.getElementById("turn-message");
 
     const boardElement =
         document.getElementById("chess-board");
@@ -1020,66 +1269,80 @@
     const statusElement =
         document.getElementById("chess-status");
 
+    const newMatchButton =
+        document.getElementById("new-match");
+
 
     let selectedOpponent = {
-        name: "Dora",
-        rating: 300
+        name: "Friend",
+        rating: "Offline",
+        mode: "offline"
     };
 
     let selectedSquare = null;
+
     let currentTurn = "white";
 
 
     /* =============================================================
-       INITIAL BOARD
+       STARTING POSITION
+       8 WHITE PAWNS + 8 BLACK PAWNS
+       =============================================================
+       Black:
+       b8 n8 etc.
+       a7 b7 c7 d7 e7 f7 g7 h7 = ALL PRESENT
+
+       White:
+       a2 b2 c2 d2 e2 f2 g2 h2 = ALL PRESENT
     ============================================================= */
 
     const startingBoard = [
+
         [
-            "br",
-            "bn",
-            "bb",
-            "bq",
-            "bk",
-            "bb",
-            "bn",
-            "br"
+            "br", "bn", "bb", "bq",
+            "bk", "bb", "bn", "br"
         ],
+
         [
-            "bp",
-            "bp",
-            "bp",
-            "bp",
-            "bp",
-            "bp",
-            "bp"
+            "bp", "bp", "bp", "bp",
+            "bp", "bp", "bp", "bp"
         ],
-        [null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null],
+
         [
-            "wp",
-            "wp",
-            "wp",
-            "wp",
-            "wp",
-            "wp",
-            "wp"
+            null, null, null, null,
+            null, null, null, null
         ],
+
         [
-            "wr",
-            "wn",
-            "wb",
-            "wq",
-            "wk",
-            "wb",
-            "wn",
-            "wr"
+            null, null, null, null,
+            null, null, null, null
+        ],
+
+        [
+            null, null, null, null,
+            null, null, null, null
+        ],
+
+        [
+            null, null, null, null,
+            null, null, null, null
+        ],
+
+        [
+            "wp", "wp", "wp", "wp",
+            "wp", "wp", "wp", "wp"
+        ],
+
+        [
+            "wr", "wn", "wb", "wq",
+            "wk", "wb", "wn", "wr"
         ]
+
     ];
 
-    let boardState = copyBoard(startingBoard);
+
+    let boardState =
+        copyBoard(startingBoard);
 
 
     /* =============================================================
@@ -1087,6 +1350,7 @@
     ============================================================= */
 
     const pieceSymbols = {
+
         wk: "♔",
         wq: "♕",
         wr: "♖",
@@ -1100,61 +1364,147 @@
         bb: "♝",
         bn: "♞",
         bp: "♟"
+
     };
 
 
     /* =============================================================
-       OPPONENT SELECTION
+       CARD SELECTION
     ============================================================= */
 
     opponentCards.forEach(card => {
 
-        card.addEventListener("click", () => {
+        const startButton =
+            card.querySelector(".card-start-btn");
+
+
+        card.addEventListener("click", event => {
+
+            /*
+                Don't trigger the card selection again when
+                the actual Start button is clicked.
+            */
+            if (
+                event.target === startButton
+            ) {
+                return;
+            }
+
 
             opponentCards.forEach(item => {
                 item.classList.remove("selected");
             });
 
+
             card.classList.add("selected");
 
+
             selectedOpponent = {
+
                 name: card.dataset.name,
-                rating: Number(card.dataset.rating)
+
+                rating: card.dataset.rating,
+
+                mode: card.dataset.mode
+
             };
 
         });
 
-    });
+
+        startButton.addEventListener("click", event => {
+
+            event.stopPropagation();
 
 
-    startMatchButton.addEventListener("click", () => {
-
-        opponentDisplay.textContent =
-            selectedOpponent.name;
-
-        opponentSelection.style.display = "none";
-
-        chessMatch.classList.add("active");
-
-        resetGame();
-
-    });
+            opponentCards.forEach(item => {
+                item.classList.remove("selected");
+            });
 
 
-    newMatchButton.addEventListener("click", () => {
+            card.classList.add("selected");
 
-        chessMatch.classList.remove("active");
 
-        opponentSelection.style.display = "block";
+            selectedOpponent = {
 
-        resetGame();
+                name: card.dataset.name,
 
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
+                rating: card.dataset.rating,
+
+                mode: card.dataset.mode
+
+            };
+
+
+            startMatch();
+
         });
 
     });
+
+
+    /* =============================================================
+       START MATCH
+    ============================================================= */
+
+    function startMatch() {
+
+        opponentSelection.style.display =
+            "none";
+
+        chessMatch.classList.add("active");
+
+
+        opponentDisplay.textContent =
+            selectedOpponent.mode === "offline"
+                ? "Friend"
+                : selectedOpponent.name;
+
+
+        resetGame();
+
+
+        if (selectedOpponent.mode === "offline") {
+
+            statusElement.textContent =
+                "Offline 2-player mode — White moves first.";
+
+        } else {
+
+            statusElement.textContent =
+                selectedOpponent.name +
+                " is selected. AI engine will be added next.";
+
+        }
+
+    }
+
+
+    /* =============================================================
+       NEW MATCH
+    ============================================================= */
+
+    newMatchButton.addEventListener(
+        "click",
+        () => {
+
+            chessMatch.classList.remove(
+                "active"
+            );
+
+            opponentSelection.style.display =
+                "block";
+
+            resetGame();
+
+
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+
+        }
+    );
 
 
     /* =============================================================
@@ -1163,7 +1513,9 @@
 
     function copyBoard(board) {
 
-        return board.map(row => row.slice());
+        return board.map(row =>
+            row.slice()
+        );
 
     }
 
@@ -1204,46 +1556,8 @@
     }
 
 
-    function isPathClear(
-        fromRow,
-        fromCol,
-        toRow,
-        toCol
-    ) {
-
-        const rowStep =
-            Math.sign(toRow - fromRow);
-
-        const colStep =
-            Math.sign(toCol - fromCol);
-
-        let row =
-            fromRow + rowStep;
-
-        let col =
-            fromCol + colStep;
-
-        while (
-            row !== toRow ||
-            col !== toCol
-        ) {
-
-            if (boardState[row][col]) {
-                return false;
-            }
-
-            row += rowStep;
-            col += colStep;
-
-        }
-
-        return true;
-
-    }
-
-
     /* =============================================================
-       LEGAL MOVEMENT
+       LEGAL MOVES
     ============================================================= */
 
     function getLegalMoves(
@@ -1258,6 +1572,7 @@
             return [];
         }
 
+
         const color =
             getPieceColor(piece);
 
@@ -1267,9 +1582,9 @@
         const moves = [];
 
 
-        /* ---------------------------------------------------------
+        /* =========================================================
            PAWN
-        --------------------------------------------------------- */
+        ========================================================= */
 
         if (type === "p") {
 
@@ -1287,6 +1602,7 @@
             const oneStepRow =
                 fromRow + direction;
 
+
             if (
                 inBounds(oneStepRow, fromCol) &&
                 !boardState[oneStepRow][fromCol]
@@ -1299,7 +1615,9 @@
 
 
                 const twoStepRow =
-                    fromRow + direction * 2;
+                    fromRow +
+                    direction * 2;
+
 
                 if (
                     fromRow === startRow &&
@@ -1316,23 +1634,34 @@
             }
 
 
-            for (const columnOffset of [-1, 1]) {
-
-                const captureCol =
-                    fromCol + columnOffset;
+            for (
+                const columnOffset of [-1, 1]
+            ) {
 
                 const captureRow =
                     fromRow + direction;
 
-                if (!inBounds(
-                    captureRow,
-                    captureCol
-                )) {
+                const captureCol =
+                    fromCol + columnOffset;
+
+
+                if (
+                    !inBounds(
+                        captureRow,
+                        captureCol
+                    )
+                ) {
                     continue;
                 }
 
+
                 const target =
-                    boardState[captureRow][captureCol];
+                    boardState[
+                        captureRow
+                    ][
+                        captureCol
+                    ];
+
 
                 if (
                     target &&
@@ -1352,22 +1681,26 @@
         }
 
 
-        /* ---------------------------------------------------------
+        /* =========================================================
            KNIGHT
-        --------------------------------------------------------- */
+        ========================================================= */
 
         if (type === "n") {
 
             const offsets = [
+
                 [-2, -1],
                 [-2, 1],
                 [-1, -2],
                 [-1, 2],
+
                 [1, -2],
                 [1, 2],
                 [2, -1],
                 [2, 1]
+
             ];
+
 
             offsets.forEach(offset => {
 
@@ -1377,12 +1710,17 @@
                 const col =
                     fromCol + offset[1];
 
-                if (!inBounds(row, col)) {
+
+                if (
+                    !inBounds(row, col)
+                ) {
                     return;
                 }
 
+
                 const target =
                     boardState[row][col];
+
 
                 if (
                     !target ||
@@ -1390,9 +1728,13 @@
                 ) {
 
                     moves.push({
+
                         row,
                         col,
-                        capture: Boolean(target)
+
+                        capture:
+                            Boolean(target)
+
                     });
 
                 }
@@ -1402,9 +1744,9 @@
         }
 
 
-        /* ---------------------------------------------------------
+        /* =========================================================
            BISHOP / ROOK / QUEEN
-        --------------------------------------------------------- */
+        ========================================================= */
 
         if (
             type === "b" ||
@@ -1413,6 +1755,7 @@
         ) {
 
             const directions = [];
+
 
             if (
                 type === "b" ||
@@ -1427,6 +1770,7 @@
                 );
 
             }
+
 
             if (
                 type === "r" ||
@@ -1451,10 +1795,14 @@
                 let col =
                     fromCol + direction[1];
 
-                while (inBounds(row, col)) {
+
+                while (
+                    inBounds(row, col)
+                ) {
 
                     const target =
                         boardState[row][col];
+
 
                     if (!target) {
 
@@ -1466,7 +1814,8 @@
                     } else {
 
                         if (
-                            getPieceColor(target) !== color
+                            getPieceColor(target)
+                            !== color
                         ) {
 
                             moves.push({
@@ -1480,6 +1829,7 @@
                         break;
                     }
 
+
                     row += direction[0];
                     col += direction[1];
 
@@ -1490,9 +1840,9 @@
         }
 
 
-        /* ---------------------------------------------------------
+        /* =========================================================
            KING
-        --------------------------------------------------------- */
+        ========================================================= */
 
         if (type === "k") {
 
@@ -1515,18 +1865,24 @@
                         continue;
                     }
 
+
                     const row =
                         fromRow + rowOffset;
 
                     const col =
                         fromCol + colOffset;
 
-                    if (!inBounds(row, col)) {
+
+                    if (
+                        !inBounds(row, col)
+                    ) {
                         continue;
                     }
 
+
                     const target =
                         boardState[row][col];
+
 
                     if (
                         !target ||
@@ -1534,9 +1890,13 @@
                     ) {
 
                         moves.push({
+
                             row,
                             col,
-                            capture: Boolean(target)
+
+                            capture:
+                                Boolean(target)
+
                         });
 
                     }
@@ -1559,16 +1919,34 @@
 
     function renderBoard() {
 
+        /*
+            Clearing and rebuilding the 64 squares ensures that
+            every render has exactly 8 rows × 8 columns.
+        */
+
         boardElement.innerHTML = "";
 
-        for (let row = 0; row < 8; row++) {
 
-            for (let col = 0; col < 8; col++) {
+        for (
+            let row = 0;
+            row < 8;
+            row++
+        ) {
+
+            for (
+                let col = 0;
+                col < 8;
+                col++
+            ) {
 
                 const square =
-                    document.createElement("button");
+                    document.createElement(
+                        "button"
+                    );
+
 
                 square.type = "button";
+
 
                 square.className =
                     "chess-square " +
@@ -1578,80 +1956,120 @@
                             : "dark"
                     );
 
+
                 square.dataset.row = row;
                 square.dataset.col = col;
 
-                const piece =
-                    boardState[row][col];
 
-
-                /* Coordinates */
+                /* -------------------------------------------------
+                   Rank number
+                ------------------------------------------------- */
 
                 if (col === 0) {
 
                     const rank =
-                        document.createElement("span");
+                        document.createElement(
+                            "span"
+                        );
 
-                    rank.className = "rank-label";
+
+                    rank.className =
+                        "rank-label";
+
 
                     rank.textContent =
                         8 - row;
+
 
                     square.appendChild(rank);
 
                 }
 
 
+                /* -------------------------------------------------
+                   File letter
+                ------------------------------------------------- */
+
                 if (row === 7) {
 
                     const file =
-                        document.createElement("span");
+                        document.createElement(
+                            "span"
+                        );
 
-                    file.className = "file-label";
+
+                    file.className =
+                        "file-label";
+
 
                     file.textContent =
                         String.fromCharCode(
                             97 + col
                         );
 
+
                     square.appendChild(file);
 
                 }
 
 
-                /* Piece */
+                /* -------------------------------------------------
+                   Piece
+                ------------------------------------------------- */
+
+                const piece =
+                    boardState[row][col];
+
 
                 if (piece) {
 
                     const pieceElement =
-                        document.createElement("span");
+                        document.createElement(
+                            "span"
+                        );
+
 
                     pieceElement.className =
                         "chess-piece " +
                         (
-                            getPieceColor(piece) === "white"
+                            getPieceColor(piece)
+                            === "white"
                                 ? "white-piece"
                                 : "black-piece"
                         );
 
+
                     pieceElement.textContent =
                         pieceSymbols[piece];
 
-                    square.appendChild(pieceElement);
+
+                    square.appendChild(
+                        pieceElement
+                    );
 
                 }
 
 
+                /* -------------------------------------------------
+                   Square click
+                ------------------------------------------------- */
+
                 square.addEventListener(
                     "click",
-                    () => handleSquareClick(
-                        row,
-                        col
-                    )
+                    () => {
+
+                        handleSquareClick(
+                            row,
+                            col
+                        );
+
+                    }
                 );
 
 
-                boardElement.appendChild(square);
+                boardElement.appendChild(
+                    square
+                );
 
             }
 
@@ -1667,13 +2085,18 @@
        CLICK HANDLING
     ============================================================= */
 
-    function handleSquareClick(row, col) {
+    function handleSquareClick(
+        row,
+        col
+    ) {
 
         const clickedPiece =
             boardState[row][col];
 
 
-        /* Destination selected */
+        /* ---------------------------------------------------------
+           Destination click
+        --------------------------------------------------------- */
 
         if (selectedSquare) {
 
@@ -1683,10 +2106,12 @@
                     selectedSquare.col
                 );
 
+
             const chosenMove =
-                legalMoves.find(move =>
-                    move.row === row &&
-                    move.col === col
+                legalMoves.find(
+                    move =>
+                        move.row === row &&
+                        move.col === col
                 );
 
 
@@ -1706,11 +2131,14 @@
         }
 
 
-        /* Select own piece */
+        /* ---------------------------------------------------------
+           Select current player's piece
+        --------------------------------------------------------- */
 
         if (
             clickedPiece &&
-            getPieceColor(clickedPiece) === currentTurn
+            getPieceColor(clickedPiece)
+            === currentTurn
         ) {
 
             selectedSquare = {
@@ -1718,10 +2146,14 @@
                 col
             };
 
+
             statusElement.textContent =
                 "Choose a highlighted destination.";
 
-            statusElement.classList.add("accent");
+            statusElement.classList.add(
+                "accent"
+            );
+
 
             renderBoard();
 
@@ -1730,16 +2162,23 @@
         }
 
 
-        /* Deselect */
+        /* ---------------------------------------------------------
+           Deselect
+        --------------------------------------------------------- */
 
         selectedSquare = null;
+
 
         statusElement.textContent =
             currentTurn === "white"
                 ? "Select a white piece to move."
-                : "Black's turn.";
+                : "Select a black piece to move.";
 
-        statusElement.classList.remove("accent");
+
+        statusElement.classList.remove(
+            "accent"
+        );
+
 
         renderBoard();
 
@@ -1757,6 +2196,7 @@
                 ".chess-square"
             );
 
+
         if (!selectedSquare) {
             return;
         }
@@ -1773,13 +2213,17 @@
             selectedSquare.row * 8 +
             selectedSquare.col;
 
+
         const selectedElement =
             squares[selectedIndex];
 
+
         if (selectedElement) {
+
             selectedElement.classList.add(
                 "selected"
             );
+
         }
 
 
@@ -1789,17 +2233,23 @@
                 move.row * 8 +
                 move.col;
 
+
             const square =
                 squares[index];
+
 
             if (!square) {
                 return;
             }
 
-            const target =
-                boardState[move.row][move.col];
 
-            if (target) {
+            if (
+                boardState[
+                    move.row
+                ][
+                    move.col
+                ]
+            ) {
 
                 square.classList.add(
                     "capture"
@@ -1832,12 +2282,14 @@
         const piece =
             boardState[fromRow][fromCol];
 
+
         const capturedPiece =
             boardState[toRow][toCol];
 
 
         boardState[toRow][toCol] =
             piece;
+
 
         boardState[fromRow][fromCol] =
             null;
@@ -1858,17 +2310,28 @@
                 : "Black";
 
 
-        if (capturedPiece) {
+        turnMessage.textContent =
+            currentTurn === "white"
+                ? "White's turn."
+                : "Black's turn.";
+
+
+        if (selectedOpponent.mode === "offline") {
 
             statusElement.textContent =
-                "Piece captured. Select your next move.";
+                capturedPiece
+                    ? "Piece captured. Your opponent's turn."
+                    : "Move made. Your opponent's turn.";
 
         } else {
 
             statusElement.textContent =
-                "Move made. Select a piece.";
+                capturedPiece
+                    ? "Piece captured."
+                    : "Move made.";
 
         }
+
 
         statusElement.classList.remove(
             "accent"
@@ -1881,7 +2344,7 @@
 
 
     /* =============================================================
-       RESET
+       RESET GAME
     ============================================================= */
 
     function resetGame() {
@@ -1889,18 +2352,28 @@
         boardState =
             copyBoard(startingBoard);
 
+
         selectedSquare = null;
 
-        currentTurn = "white";
 
-        turnDisplay.textContent = "White";
+        currentTurn =
+            "white";
 
-        statusElement.textContent =
-            "Select a piece to see its legal destinations.";
+
+        turnDisplay.textContent =
+            "White";
+
+
+        turnMessage.textContent =
+            selectedOpponent.mode === "offline"
+                ? "White's turn."
+                : "You are White.";
+
 
         statusElement.classList.remove(
             "accent"
         );
+
 
         renderBoard();
 
@@ -1908,7 +2381,7 @@
 
 
     /* =============================================================
-       FIRST RENDER
+       INITIAL RENDER
     ============================================================= */
 
     renderBoard();
