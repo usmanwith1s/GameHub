@@ -1115,15 +1115,48 @@
 
             <div class="board-area">
 
-                <div class="board-shell">
+               <div class="board-shell">
 
-                    <div
-                        id="chess-board"
-                        class="chess-board"
-                        aria-label="Chess board"
-                    ></div>
+    <div
+        id="chess-board"
+        class="chess-board"
+        aria-label="Chess board"
+    ></div>
 
-                </div>
+    <div
+        id="game-over-overlay"
+        class="game-over-overlay"
+        aria-live="assertive"
+    >
+        <div class="game-over-card">
+
+            <span
+                id="game-over-label"
+                class="game-over-label"
+            >
+                CHECKMATE
+            </span>
+
+            <h2 id="game-over-title">
+                White Wins
+            </h2>
+
+            <p id="game-over-subtitle">
+                Congratulations!
+            </p>
+
+            <button
+                type="button"
+                id="rematch-button"
+                class="rematch-button"
+            >
+                Rematch
+            </button>
+
+        </div>
+    </div>
+
+</div>
 
             </div>
 
