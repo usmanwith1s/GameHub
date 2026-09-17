@@ -32,13 +32,13 @@ const CHESS_AI_PROFILES = {
     },
 
     Usman: {
-        depth: 3,
-        randomness: 0.09,
-        topChoices: 2,
-        thinkDelay: 700,
-        captureBias: 1.10,
-        centerBias: 0.50
-    },
+    depth: 3,
+    randomness: 0.02,
+    topChoices: 1,
+    thinkDelay: 850,
+    captureBias: 1.35,
+    centerBias: 0.80
+},
 
     Grandmaster: {
         depth: 3,
