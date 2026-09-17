@@ -1,1 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chess | GameHub</title>
 
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            background: #111;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .game {
+            width: min(95vw, 760px);
+            text-align: center;
+        }
+
+        h1 {
+            font-size: clamp(2rem, 6vw, 3.5rem);
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #aaa;
+            margin-bottom: 22px;
+        }
+
+        .status {
+            min-height: 24px;
+            margin-bottom: 12px;
+            font-weight: bold;
+        }
+
+        .board {
+            width: min(90vw, 680px);
+            aspect-ratio: 1;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            border: 5px solid #222;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.45);
+        }
+
+        .square {
+            border: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            font-size: clamp(30px, 8vw, 68px);
+            line-height: 1;
+            user-select: none;
+        }
+
+        .light {
+            background: #f0d9b5;
+        }
+
+        .dark {
+            background: #b58863;
+        }
+
+        .square.selected {
+            box-shadow: inset 0 0 0 5px #e5c95f;
+        }
+
+        .square.legal::after {
+            content: "";
+            width: 24%;
+            aspect-ratio: 1;
+            border-radius: 50%;
+            background: rgba(30, 30, 30, 0.35);
+            position: absolute;
+        }
+
+        .square.capture::after {
+            content: "";
+            position: absolute;
+            inset: 7%;
+            border: 5px solid rgba(180, 30, 30, 0.7);
+            border-radius: 50%;
+        }
+
+        .piece {
+            position: relative;
+            z-index: 2;
+            font-family: "Segoe UI Symbol", "Noto Sans Symbols 2", serif;
+            text-shadow: 0 2px 2px rgba(0, 0, 0, 0.35);
+        }
+
+        .white-piece {
+            color: #fff;
+        }
+
+        .black-piece {
+            color: #111;
+        }
+
+        .controls {
+            margin-top: 20px;
+        }
+
+        button.reset {
+            border: 0;
+            padding: 12px 22px;
+            border-radius: 10px;
+            background: #fff;
+            color: #111;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        button.reset:hover {
+            transform: translateY(-1px);
+        }
+
+        @media (max-width: 500px) {
+            body {
+                padding: 10px;
+            }
+
+            .board {
+                border-width: 3px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<main class="game">
+    <h1>♟ Chess</h1>
+    <p class="subtitle">GameHub</p>
+
+    <div class="status" id="status">White's turn</div>
+
+    <div class="board" id="board" aria-label="Chess board"></div>
+
+    <div class="controls">
+        <button class="reset" id="resetButton" type="button">
+            New Game
+        </button>
+    </div>
+</main>
+
+<script>
+    const boardElement = document.getElementById("board");
+    const statusElement = document.getElementById("status");
+    const resetButton = document.getElementById("resetButton");
+
+    const pieces = {
+        wK: "♔",
+        wQ: "♕",
+        wR: "♖",
+        wB: "♗",
+        wN: "♘",
+        wP: "♙",
+
+        bK: "♚",
+        bQ: "♛",
+        bR: "♜",
+        bB: "♝",
+        bN: "♞",
+        bP: "♟"
+    };
+
+    let board;
+    let currentPlayer;
+    let selectedSquare;
+
+    function createStartingBoard() {
+        return [
+            ["bR", "bN", "bB", "bQ", "bK", "bB", "bN", "bR"],
+            ["bP", "bP", "bP", "bP", "bP", "bP", "bP", "bP"],
+            [null, null, null, null, null, null, null, null],
+            [null, null, null, null, null, null, null, null],
+            [null, null, null, null, null, null, null, null],
+            [null, null, null, null, null, null, null, null],
+            ["wP", "wP", "wP", "wP", "wP", "wP", "wP", "wP"],
+            ["wR", "wN", "wB", "wQ", "wK", "wB", "wN", "wR"]
+        ];
+    }
+
+    function resetGame() {
+        board = createStartingBoard();
+        currentPlayer = "w";
+        selectedSquare = null;
+        statusElement.textContent = "White's turn";
+        renderBoard();
+    }
+
+    function renderBoard() {
+        boardElement.innerHTML = "";
+
+        for (let row = 0; row < 8; row++) {
+            for (let col = 0; col < 8; col++) {
+
+                const square = document.createElement("button");
+                square.type = "button";
+                square.className = "square";
+
+                if ((row + col) % 2 === 0) {
+                    square.classList.add("light");
+                } else {
+                    square.classList.add("dark");
+                }
+
+                square.dataset.row = row;
+                square.dataset.col = col;
+
+                if (
+                    selectedSquare &&
+                    selectedSquare.row === row &&
+                    selectedSquare.col === col
+                ) {
+                    square.classList.add("selected");
+                }
+
+                const piece = board[row][col];
+
+                if (piece) {
+                    const pieceElement = document.createElement("span");
+                    pieceElement.className = "piece";
+
+                    if (piece[0] === "w") {
+                        pieceElement.classList.add("white-piece");
+                    } else {
+                        pieceElement.classList.add("black-piece");
+                    }
+
+                    pieceElement.textContent = pieces[piece];
+                    square.appendChild(pieceElement);
+                }
+
+                square.addEventListener("click", function () {
+                    handleSquareClick(row, col);
+                });
+
+                boardElement.appendChild(square);
+            }
+        }
+    }
+
+    function handleSquareClick(row, col) {
+        const piece = board[row][col];
+
+        if (!selectedSquare) {
+
+            if (!piece) {
+                return;
+            }
+
+            if (piece[0] !== currentPlayer) {
+                return;
+            }
+
+            selectedSquare = {
+                row: row,
+                col: col
+            };
+
+            renderBoard();
+            return;
+        }
+
+        if (
+            selectedSquare.row === row &&
+            selectedSquare.col === col
+        ) {
+            selectedSquare = null;
+            renderBoard();
+            return;
+        }
+
+        if (piece && piece[0] === currentPlayer) {
+            selectedSquare = {
+                row: row,
+                col: col
+            };
+
+            renderBoard();
+            return;
+        }
+
+        movePiece(
+            selectedSquare.row,
+            selectedSquare.col,
+            row,
+            col
+        );
+    }
+
+    function movePiece(fromRow, fromCol, toRow, toCol) {
+        const movingPiece = board[fromRow][fromCol];
+
+        if (!isBasicLegalMove(
+            movingPiece,
+            fromRow,
+            fromCol,
+            toRow,
+            toCol
+        )) {
+            statusElement.textContent = "That piece cannot move there.";
+            return;
+        }
+
+        board[toRow][toCol] = movingPiece;
+        board[fromRow][fromCol] = null;
+
+        selectedSquare = null;
+
+        currentPlayer = currentPlayer === "w" ? "b" : "w";
+
+        statusElement.textContent =
+            currentPlayer === "w"
+                ? "White's turn"
+                : "Black's turn";
+
+        renderBoard();
+    }
+
+    function isBasicLegalMove(
+        piece,
+        fromRow,
+        fromCol,
+        toRow,
+        toCol
+    ) {
+        const type = piece[1];
+        const rowDifference = Math.abs(toRow - fromRow);
+        const colDifference = Math.abs(toCol - fromCol);
+
+        switch (type) {
+
+            case "P":
+                return isPawnMove(
+                    piece,
+                    fromRow,
+                    fromCol,
+                    toRow,
+                    toCol
+                );
+
+            case "R":
+                return (
+                    fromRow === toRow ||
+                    fromCol === toCol
+                );
+
+            case "B":
+                return rowDifference === colDifference;
+
+            case "Q":
+                return (
+                    fromRow === toRow ||
+                    fromCol === toCol ||
+                    rowDifference === colDifference
+                );
+
+            case "K":
+                return (
+                    rowDifference <= 1 &&
+                    colDifference <= 1
+                );
+
+            case "N":
+                return (
+                    (rowDifference === 2 && colDifference === 1) ||
+                    (rowDifference === 1 && colDifference === 2)
+                );
+
+            default:
+                return false;
+        }
+    }
+
+    function isPawnMove(
+        piece,
+        fromRow,
+        fromCol,
+        toRow,
+        toCol
+    ) {
+        const direction = piece[0] === "w" ? -1 : 1;
+        const startingRow = piece[0] === "w" ? 6 : 1;
+
+        const rowDifference = toRow - fromRow;
+        const colDifference = Math.abs(toCol - fromCol);
+
+        if (
+            colDifference === 0 &&
+            rowDifference === direction &&
+            !board[toRow][toCol]
+        ) {
+            return true;
+        }
+
+        if (
+            colDifference === 0 &&
+            fromRow === startingRow &&
+            rowDifference === direction * 2 &&
+            !board[fromRow + direction][fromCol] &&
+            !board[toRow][toCol]
+        ) {
+            return true;
+        }
+
+        if (
+            colDifference === 1 &&
+            rowDifference === direction &&
+            board[toRow][toCol] &&
+            board[toRow][toCol][0] !== piece[0]
+        ) {
+            return true;
+        }
+
+        return false;
+    }
+
+    resetButton.addEventListener("click", resetGame);
+
+    resetGame();
+</script>
+
+</body>
+</html>
