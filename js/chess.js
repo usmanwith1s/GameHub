@@ -1675,7 +1675,61 @@ function updateCastlingRights(
 
 }
 
+/* =========================================================
+   FLASH CHECKED KING
+========================================================= */
 
+function flashCheckedKing(color) {
+
+    const king =
+        findKing(color);
+
+    if (!king) {
+        return;
+    }
+
+    const squares =
+        boardElement.querySelectorAll(
+            ".chess-square"
+        );
+
+    const index =
+        king.row * 8 +
+        king.col;
+
+    const kingSquare =
+        squares[index];
+
+    if (!kingSquare) {
+        return;
+    }
+
+    /*
+       Remove the class first so the animation can be
+       triggered again on the next check.
+    */
+    kingSquare.classList.remove(
+        "check-flash"
+    );
+
+    /*
+       Force browser reflow so the animation restarts.
+    */
+    void kingSquare.offsetWidth;
+
+    kingSquare.classList.add(
+        "check-flash"
+    );
+
+    setTimeout(() => {
+
+        kingSquare.classList.remove(
+            "check-flash"
+        );
+
+    }, 1000);
+
+}
 /* =========================================================
    PROMOTION
    ========================================================= */
