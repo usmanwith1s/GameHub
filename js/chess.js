@@ -77,6 +77,7 @@ let currentTurn = "white";
 let selectedSquare = null;
 
 let gameOver = false;
+let aiThinking = false;
 
 let enPassantTarget = null;
 
@@ -1777,7 +1778,8 @@ function choosePromotion(color) {
 function makeMove(
     fromRow,
     fromCol,
-    move
+    move,
+    isAI = false
 ) {
 
     if (gameOver) {
@@ -1811,19 +1813,20 @@ function makeMove(
        --------------------------------------------------------- */
 
     let promotionPiece =
-        move.promotion;
+    move.promotion;
 
+if (
+    move.promotion
+) {
 
-    if (
-        move.promotion
-    ) {
-
-        promotionPiece =
-            choosePromotion(
+    promotionPiece =
+        isAI
+            ? "q"
+            : choosePromotion(
                 movingColor
             );
 
-    }
+}
 
 
     const actualMove = {
@@ -1904,6 +1907,15 @@ function makeMove(
         capturedPiece,
         actualMove
     );
+   if (
+    !gameOver &&
+    selectedOpponent.mode === "ai" &&
+    currentTurn === "black"
+) {
+
+    scheduleAIMove();
+
+}
 
 }
 
@@ -2164,7 +2176,16 @@ function handleSquareClick(
     row,
     col
 ) {
+if (
+    aiThinking
+) {
 
+    statusElement.textContent =
+        `${selectedOpponent.name} is thinking...`;
+
+    return;
+
+}
     if (gameOver) {
 
         statusElement.textContent =
