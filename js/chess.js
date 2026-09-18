@@ -1995,10 +1995,10 @@ showGameOver(
         ) {
 
             saveChessLeaderboardResult(
-                movingColor === "white"
-                    ? "win"
-                    : "loss"
-            );
+    currentTurn === "black"
+        ? "win"
+        : "loss"
+);
 
         }
 
