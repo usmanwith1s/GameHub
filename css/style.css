@@ -1021,6 +1021,31 @@ body.light-mode .login-btn {
         linear-gradient(145deg, #111116, #08080a);
 }
 
+.chess-game-visual {
+    background:
+        radial-gradient(
+            circle at 72% 35%,
+            rgba(156, 255, 0, 0.20),
+            transparent 40%
+        ),
+        radial-gradient(
+            circle at 25% 70%,
+            rgba(100, 80, 255, 0.10),
+            transparent 35%
+        ),
+        linear-gradient(145deg, #111116, #08080a);
+}
+
+.chess-game-visual .game-visual-icon {
+    font-size: 5.2rem;
+    line-height: 0.72;
+    letter-spacing: 0;
+    -webkit-text-stroke: 0;
+    color: rgba(255, 255, 255, 0.88);
+    text-shadow:
+        0 0 16px rgba(156, 255, 0, 0.16);
+}
+
 .coming-game-visual {
     background:
         radial-gradient(
