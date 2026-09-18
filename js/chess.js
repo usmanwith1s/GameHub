@@ -31,6 +31,9 @@ const chessMatch =
 const opponentDisplay =
     document.getElementById("opponent-display");
 
+const gamePlayerElement =
+    document.getElementById("game-player");
+
 const turnDisplay =
     document.getElementById("turn-display");
 
@@ -78,6 +81,7 @@ let selectedSquare = null;
 
 let gameOver = false;
 let aiThinking = false;
+let leaderboardScoreSaved = false;
 
 let enPassantTarget = null;
 
@@ -1986,6 +1990,19 @@ showGameOver(
 );
 
 
+        if (
+            selectedOpponent.mode === "ai"
+        ) {
+
+            saveChessLeaderboardResult(
+                movingColor === "white"
+                    ? "win"
+                    : "loss"
+            );
+
+        }
+
+
         statusElement.classList.add(
             "accent"
         );
@@ -2025,6 +2042,17 @@ showGameOver(
     "Draw",
     "Neither side has a legal move."
 );
+
+
+        if (
+            selectedOpponent.mode === "ai"
+        ) {
+
+            saveChessLeaderboardResult(
+                "draw"
+            );
+
+        }
 
 
         statusElement.classList.add(
@@ -2773,10 +2801,138 @@ function renderBoard() {
 
 
 /* =========================================================
+   GAMEHUB PLAYER + LEADERBOARD
+   ========================================================= */
+
+function updateChessPlayerDisplay() {
+
+    if (!gamePlayerElement) {
+        return;
+    }
+
+
+    const currentPlayer =
+        localStorage.getItem("gamehubPlayer") || "Guest";
+
+
+    gamePlayerElement.textContent =
+        currentPlayer;
+
+}
+
+
+function getChessLeaderboardScore(result) {
+
+    if (
+        selectedOpponent.mode !== "ai"
+    ) {
+        return 0;
+    }
+
+
+    const rating =
+        Number(selectedOpponent.rating);
+
+
+    if (!Number.isFinite(rating)) {
+        return 0;
+    }
+
+
+    const winScore =
+        100 + Math.round(rating / 10);
+
+
+    if (result === "win") {
+        return winScore;
+    }
+
+
+    if (result === "draw") {
+        return Math.round(winScore / 2);
+    }
+
+
+    return 0;
+
+}
+
+
+function saveChessLeaderboardResult(result) {
+
+    if (
+        leaderboardScoreSaved ||
+        selectedOpponent.mode !== "ai"
+    ) {
+        return;
+    }
+
+
+    const score =
+        getChessLeaderboardScore(result);
+
+
+    if (score <= 0) {
+        return;
+    }
+
+
+    leaderboardScoreSaved = true;
+
+
+    if (
+        window.GameHub &&
+        typeof window.GameHub.saveScore === "function"
+    ) {
+
+        window.GameHub.saveScore({
+
+            game: "Chess",
+
+            score: score,
+
+            level: Number(selectedOpponent.rating) || 0,
+
+            bestStreak: 0,
+
+            lives: 0,
+
+            completed: true
+        }).then((savedRecord) => {
+
+            if (savedRecord) {
+
+                console.log(
+                    "GameHub Chess score saved:",
+                    savedRecord
+                );
+
+            }
+
+        }).catch((error) => {
+
+            console.error(
+                "GameHub Chess score error:",
+                error
+            );
+
+        });
+
+    }
+
+}
+
+
+/* =========================================================
    RESET GAME
    ========================================================= */
 
 function resetGame() {
+
+    leaderboardScoreSaved = false;
+
+    updateChessPlayerDisplay();
+
 
     boardState =
         copyBoard(
@@ -2834,7 +2990,7 @@ function resetGame() {
     } else {
 
         statusElement.textContent =
-            `${selectedOpponent.name} selected. AI engine will be connected next.`;
+            `${selectedOpponent.name} selected. White moves first.`;
 
     }
 
